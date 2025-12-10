@@ -50,8 +50,8 @@
         <div class="container">
             <ul>
                 <li class="active"><a href="index.html"><i class="fas fa-calculator"></i> Calculator</a></li>
-                <li><a href="results.html" id="resultsNavLink"><i class="fas fa-list-alt"></i> Results</a></li>
-                <li><a href="quotation.html" id="quotationNavLink"><i class="fas fa-file-invoice-dollar"></i> Quotation</a></li>
+                <li><a href="results.html"><i class="fas fa-list-alt"></i> Results</a></li>
+                <li><a href="quotation.html"><i class="fas fa-file-invoice-dollar"></i> Quotation</a></li>
                 <li class="mode-toggle">
                     <label class="switch">
                         <input type="checkbox" id="expertModeToggle">
@@ -292,7 +292,7 @@
                     
                     <div class="form-group">
                         <label for="pipeMaterial">Piping Material</label>
-                        <select id="pipeMaterial">
+                            <select id="pipeMaterial">
                             <option value="galvanized">Galvanized Steel</option>
                             <option value="stainless">Stainless Steel</option>
                             <option value="copper">Copper</option>
@@ -420,6 +420,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof KFSSCalculator !== 'undefined') {
                 KFSSCalculator.init();
+            } else {
+                console.error('KFSSCalculator is not defined. Check if script.js is loaded correctly.');
             }
         });
     </script>
