@@ -1,6 +1,15 @@
-[file name]: vercel.json
-[file content begin]
 {
-  "version": 2
+  "version": 2,
+  "builds": [
+    {
+      "src": "*.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
 }
-[file content end]
