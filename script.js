@@ -1,5 +1,3 @@
-[file name]: script.js
-[file content begin]
 /**
  * KFSS Calculator - Kitchen Fire Suppression System Calculator
  * Main JavaScript Application
@@ -55,6 +53,7 @@ const KFSSCalculator = (function() {
      * Initialize the calculator
      */
     function init() {
+        console.log('KFSS Calculator initializing...');
         loadRecentCalculations();
         initializeAppliances();
         setupEventListeners();
@@ -72,6 +71,8 @@ const KFSSCalculator = (function() {
                 console.error('Failed to load last calculation:', e);
             }
         }
+        
+        console.log('KFSS Calculator initialized successfully');
     }
     
     /**
@@ -667,15 +668,15 @@ const KFSSCalculator = (function() {
         try {
             const saved = localStorage.getItem('kfss_last_calculation');
             if (!saved) {
-                loading.style.display = 'none';
-                noResults.style.display = 'block';
+                if (loading) loading.style.display = 'none';
+                if (noResults) noResults.style.display = 'block';
                 return;
             }
             
             currentCalculation = JSON.parse(saved);
             
             // Hide loading, show results
-            loading.style.display = 'none';
+            if (loading) loading.style.display = 'none';
             
             // Generate results HTML
             const resultsHTML = generateResultsHTML(currentCalculation);
@@ -683,8 +684,8 @@ const KFSSCalculator = (function() {
             
         } catch (error) {
             console.error('Error loading results:', error);
-            loading.style.display = 'none';
-            noResults.style.display = 'block';
+            if (loading) loading.style.display = 'none';
+            if (noResults) noResults.style.display = 'block';
         }
     }
     
@@ -853,15 +854,15 @@ const KFSSCalculator = (function() {
         try {
             const saved = localStorage.getItem('kfss_last_calculation');
             if (!saved) {
-                loading.style.display = 'none';
-                noQuotation.style.display = 'block';
+                if (loading) loading.style.display = 'none';
+                if (noQuotation) noQuotation.style.display = 'block';
                 return;
             }
             
             currentCalculation = JSON.parse(saved);
             
             // Hide loading, show quotation
-            loading.style.display = 'none';
+            if (loading) loading.style.display = 'none';
             
             // Generate quotation HTML
             const quotationHTML = generateQuotationHTML(currentCalculation);
@@ -869,8 +870,8 @@ const KFSSCalculator = (function() {
             
         } catch (error) {
             console.error('Error loading quotation:', error);
-            loading.style.display = 'none';
-            noQuotation.style.display = 'block';
+            if (loading) loading.style.display = 'none';
+            if (noQuotation) noQuotation.style.display = 'block';
         }
     }
     
@@ -1114,4 +1115,3 @@ const KFSSCalculator = (function() {
         updateSummary: updateSummary
     };
 })();
-[file content end]
