@@ -1,0 +1,27 @@
+[file name]: package.json
+[file content begin]
+{
+  "name": "kitchen-fire-suppression-calculator",
+  "version": "1.0.0",
+  "description": "Professional Kitchen Fire Suppression System Calculator",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "build": "echo 'No build step required for static site'",
+    "test": "echo 'No tests specified'"
+  },
+  "keywords": [
+    "fire-safety",
+    "kitchen-fire",
+    "calculator",
+    "nfpa",
+    "engineering-tool"
+  ],
+  "author": "Fire Safety Solutions",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "serve": "^14.0.0"
+  }
+}
+[file content end]

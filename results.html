@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KFSS Calculator Results | Bill of Quantities</title>
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-376208036"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-376208036');
+    </script>
+    
+    <!-- Google AdSense Auto Ads -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6687860250561653" crossorigin="anonymous"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-fire-extinguisher"></i>
+                    <div>
+                        <h1>KFSS Calculator Results</h1>
+                        <span>Bill of Quantities & Cost Breakdown</span>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <div class="project-name" id="resultProjectName">Project Name</div>
+                    <div class="project-client" id="resultClientName">Client Name</div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="container">
+            <ul>
+                <li><a href="index.html"><i class="fas fa-calculator"></i> Calculator</a></li>
+                <li class="active"><a href="results.html"><i class="fas fa-list-alt"></i> Results</a></li>
+                <li><a href="quotation.html"><i class="fas fa-file-invoice-dollar"></i> Quotation</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <div class="page-header">
+            <div class="back-home">
+                <a href="index.html" class="btn btn-outline">
+                    <i class="fas fa-arrow-left"></i> Back to Calculator
+                </a>
+            </div>
+            <h2><i class="fas fa-chart-bar"></i> Calculation Results & BOQ</h2>
+            <p>Detailed breakdown of your kitchen fire suppression system</p>
+        </div>
+        
+        <div id="resultsContent">
+            <!-- Results will be loaded by JavaScript -->
+            <div class="card" id="loadingResults">
+                <div class="loading-state">
+                    <div class="spinner"></div>
+                    <p>Loading calculation results...</p>
+                </div>
+            </div>
+            
+            <div class="no-data" id="noResults" style="display: none;">
+                <i class="fas fa-exclamation-circle"></i>
+                <h3>No Calculation Results Found</h3>
+                <p>Please go back to the calculator and perform a calculation first.</p>
+                <a href="index.html" class="btn btn-primary">
+                    <i class="fas fa-calculator"></i> Go to Calculator
+                </a>
+            </div>
+        </div>
+        
+        <!-- Explore Tools Section -->
+        <section class="explore-tools">
+            <h2><i class="fas fa-star"></i> Explore More Calculators & Tools</h2>
+            <p class="section-subtitle">We highly recommend these expert resources for specialized safety and utility tools:</p>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-icon">🔥</div>
+                    <h3>Fire Safety Tool</h3>
+                    <p>Comprehensive suite of NFPA & IBC compliant calculators for clean agent, CO₂, foam systems, and egress planning.</p>
+                    <a href="https://www.firesafetytool.com" target="_blank" class="tool-link">Visit Site <i class="fas fa-external-link-alt"></i></a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🛡️</div>
+                    <h3>HSE Calculator</h3>
+                    <p>Health, Safety & Environment tools for risk assessment, noise exposure, incident rates, and compliance management.</p>
+                    <a href="https://www.hsecalculator.com" target="_blank" class="tool-link">Visit Site <i class="fas fa-external-link-alt"></i></a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">⚙️</div>
+                    <h3>Web Tools Daily</h3>
+                    <p>Collection of free, privacy-focused utilities like image converters and formatters that work directly in your browser.</p>
+                    <a href="https://www.webtoolsdaily.com" target="_blank" class="tool-link">Visit Site <i class="fas fa-external-link-alt"></i></a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Amazon Associates Banner -->
+        <aside class="affiliate-banner">
+            <a href="https://amzn.to/4p8ceG6" target="_blank" class="amazon-button">
+                <span class="sale-badge">Clearance Sale! Up to 70% Off</span>
+                <span class="banner-text">🔥 Shop Fire Safety Equipment on Amazon</span>
+                <i class="fas fa-bolt"></i>
+            </a>
+        </aside>
+        
+        <!-- Disclaimer -->
+        <div class="disclaimer">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div>
+                <strong>Disclaimer:</strong> This calculation is based on the inputs provided and standard engineering assumptions. It is intended for preliminary estimation only. Final design must be performed by a qualified fire protection engineer in accordance with all applicable local codes and standards.
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-fire-extinguisher"></i>
+                    <span>KFSS Calculator</span>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html">Calculator</a>
+                    <a href="results.html">Results</a>
+                    <a href="quotation.html">Quotation</a>
+                    <a href="#" onclick="window.print()">Print</a>
+                </div>
+                <div class="footer-disclaimer">
+                    <p>© 2023 Fire Safety Solutions. Professional fire suppression system calculator.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script>
+        // Load and display results when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof KFSSCalculator !== 'undefined') {
+                // Wait a moment for DOM to be fully ready
+                setTimeout(function() {
+                    KFSSCalculator.displayResults();
+                }, 100);
+            }
+        });
+    </script>
+</body>
+</html>
