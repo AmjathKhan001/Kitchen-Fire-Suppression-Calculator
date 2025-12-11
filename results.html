@@ -27,7 +27,7 @@
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
     
     <style>
-        /* Additional styles for results page */
+        /* Results page specific styles */
         .results-container {
             display: flex;
             flex-direction: column;
@@ -159,29 +159,6 @@
             font-size: 1.2rem;
             color: var(--dark);
         }
-        
-        .help-list {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .help-list li {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin-bottom: 12px;
-            padding: 8px 0;
-            border-bottom: 1px dashed #eee;
-        }
-        
-        .help-list li:last-child {
-            border-bottom: none;
-        }
-        
-        .help-list i {
-            color: var(--success);
-            margin-top: 2px;
-        }
     </style>
 </head>
 <body>
@@ -228,7 +205,7 @@
         </div>
         
         <div id="resultsContent">
-            <!-- Results will be loaded by JavaScript -->
+            <!-- Results will be loaded by JavaScript from index.html -->
             <div class="card" id="loadingResults">
                 <div class="loading-state">
                     <div class="spinner"></div>
@@ -309,23 +286,118 @@
         </footer>
     </div>
     
-        <!-- Scripts -->
-    <script src="script.js"></script>
+    <!-- Load results from localStorage -->
     <script>
-        // Load and display results when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Results page loaded');
-            if (typeof KFSSCalculator !== 'undefined' && KFSSCalculator.displayResults) {
-                // Wait a moment for DOM to be fully ready
-                setTimeout(function() {
-                    KFSSCalculator.displayResults();
-                }, 100);
+            // Check if KFSSCalculator exists (it should be loaded from index.html)
+            if (typeof KFSSCalculator === 'undefined') {
+                // If not defined, create a simple function to load results
+                loadResultsSimple();
             } else {
-                console.error('KFSSCalculator is not defined. Check if script.js is loaded correctly.');
-                document.getElementById('loadingResults').style.display = 'none';
-                document.getElementById('noResults').style.display = 'block';
+                // Use the main calculator's displayResults function
+                KFSSCalculator.displayResults();
             }
         });
+        
+        function loadResultsSimple() {
+            const container = document.getElementById('resultsContent');
+            const loading = document.getElementById('loadingResults');
+            const noResults = document.getElementById('noResults');
+            
+            // Try to load calculation from localStorage
+            try {
+                const saved = localStorage.getItem('kfss_last_calculation');
+                if (!saved) {
+                    loading.style.display = 'none';
+                    noResults.style.display = 'block';
+                    return;
+                }
+                
+                const calculation = JSON.parse(saved);
+                loading.style.display = 'none';
+                
+                // Simple display of results
+                const symbol = {'USD': '$', 'EUR': '€', 'INR': '₹', 'AED': 'د.إ'}[calculation.project.currency] || '$';
+                const exchangeRate = calculation.results.exchangeRate || 1;
+                
+                const formatCost = (amount) => {
+                    return symbol + (amount * exchangeRate).toFixed(2);
+                };
+                
+                container.innerHTML = `
+                    <div class="results-container">
+                        <div class="card">
+                            <h3 class="card-title"><i class="fas fa-info-circle"></i> Project Information</h3>
+                            <div class="project-details-grid">
+                                <div class="detail-item">
+                                    <strong>Project:</strong> ${calculation.project.name}
+                                </div>
+                                <div class="detail-item">
+                                    <strong>Client:</strong> ${calculation.project.client}
+                                </div>
+                                <div class="detail-item">
+                                    <strong>Location:</strong> ${calculation.project.location || 'Not specified'}
+                                </div>
+                                <div class="detail-item">
+                                    <strong>Currency:</strong> ${calculation.project.currency} (${symbol})
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <h3 class="card-title"><i class="fas fa-list-ol"></i> System Summary</h3>
+                            <div class="boq-grid">
+                                <div class="boq-item">
+                                    <div class="boq-label">Total Nozzles</div>
+                                    <div class="boq-value">${calculation.results.nozzles.total}</div>
+                                </div>
+                                <div class="boq-item">
+                                    <div class="boq-label">Cylinders Required</div>
+                                    <div class="boq-value">${calculation.results.cylinders}</div>
+                                </div>
+                                <div class="boq-item">
+                                    <div class="boq-label">Agent Weight</div>
+                                    <div class="boq-value">${calculation.results.agentWeight.toFixed(1)} kg</div>
+                                </div>
+                                <div class="boq-item">
+                                    <div class="boq-label">Total Cost</div>
+                                    <div class="boq-value">${formatCost(calculation.results.totalCost)}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <h3 class="card-title"><i class="fas fa-money-bill-wave"></i> Cost Breakdown</h3>
+                            <div class="cost-breakdown">
+                                ${Object.entries(calculation.results.subtotals).map(([key, value]) => `
+                                    <div class="cost-item">
+                                        <span>${key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</span>
+                                        <span>${formatCost(value)}</span>
+                                    </div>
+                                `).join('')}
+                                <div class="cost-total">
+                                    <strong>Total System Cost</strong>
+                                    <strong>${formatCost(calculation.results.totalCost)}</strong>
+                                </div>
+                            </div>
+                            <div class="action-buttons" style="margin-top: 25px;">
+                                <button onclick="window.print()" class="btn btn-primary">
+                                    <i class="fas fa-print"></i> Print Results
+                                </button>
+                                <a href="quotation.html" class="btn btn-secondary">
+                                    <i class="fas fa-file-invoice-dollar"></i> Generate Quotation
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('Error loading results:', error);
+                loading.style.display = 'none';
+                noResults.style.display = 'block';
+            }
+        }
     </script>
 </body>
 </html>
