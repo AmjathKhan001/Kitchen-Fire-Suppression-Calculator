@@ -309,12 +309,13 @@
         </footer>
     </div>
     
-    <!-- Scripts -->
+        <!-- Scripts -->
     <script src="script.js"></script>
     <script>
         // Load and display results when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            if (typeof KFSSCalculator !== 'undefined') {
+            console.log('Results page loaded');
+            if (typeof KFSSCalculator !== 'undefined' && KFSSCalculator.displayResults) {
                 // Wait a moment for DOM to be fully ready
                 setTimeout(function() {
                     KFSSCalculator.displayResults();
