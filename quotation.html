@@ -27,7 +27,7 @@
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
     
     <style>
-        /* Additional styles for quotation page */
+        /* Quotation page specific styles */
         .quotation-container {
             display: flex;
             flex-direction: column;
@@ -142,10 +142,6 @@
         
         .table-row:nth-child(even) {
             background-color: rgba(0, 0, 0, 0.02);
-        }
-        
-        .table-row:hover {
-            background-color: rgba(198, 40, 40, 0.05);
         }
         
         .col-item {
@@ -353,23 +349,146 @@
         </footer>
     </div>
     
-        <!-- Scripts -->
-    <script src="script.js"></script>
+    <!-- Load quotation from localStorage -->
     <script>
-        // Load and display quotation when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Quotation page loaded');
-            if (typeof KFSSCalculator !== 'undefined' && KFSSCalculator.displayQuotation) {
-                // Wait a moment for DOM to be fully ready
-                setTimeout(function() {
-                    KFSSCalculator.displayQuotation();
-                }, 100);
-            } else {
-                console.error('KFSSCalculator is not defined. Check if script.js is loaded correctly.');
-                document.getElementById('loadingQuotation').style.display = 'none';
-                document.getElementById('noQuotation').style.display = 'block';
-            }
+            loadQuotationSimple();
         });
+        
+        function loadQuotationSimple() {
+            const container = document.getElementById('quotationContent');
+            const loading = document.getElementById('loadingQuotation');
+            const noQuotation = document.getElementById('noQuotation');
+            
+            // Try to load calculation from localStorage
+            try {
+                const saved = localStorage.getItem('kfss_last_calculation');
+                if (!saved) {
+                    loading.style.display = 'none';
+                    noQuotation.style.display = 'block';
+                    return;
+                }
+                
+                const calculation = JSON.parse(saved);
+                loading.style.display = 'none';
+                
+                // Simple display of quotation
+                const symbol = {'USD': '$', 'EUR': '€', 'INR': '₹', 'AED': 'د.إ'}[calculation.project.currency] || '$';
+                const exchangeRate = calculation.results.exchangeRate || 1;
+                
+                const formatCost = (amount) => {
+                    return symbol + (amount * exchangeRate).toFixed(2);
+                };
+                
+                // Generate quote number
+                const quoteNumber = 'Q-' + new Date(calculation.timestamp).getFullYear() + '-' + 
+                                   String(new Date(calculation.timestamp).getMonth() + 1).padStart(2, '0') + '-' + 
+                                   String(calculation.id).slice(-6);
+                
+                // Validity date
+                const validityDate = new Date();
+                validityDate.setDate(validityDate.getDate() + 30);
+                const formattedValidityDate = validityDate.toLocaleDateString();
+                
+                container.innerHTML = `
+                    <div class="quotation-container">
+                        <div class="card quotation-header-card">
+                            <div class="quotation-header-content">
+                                <div class="quotation-title">
+                                    <h1>QUOTATION</h1>
+                                    <p class="quote-number">Quote No: ${quoteNumber}</p>
+                                </div>
+                                <div class="quotation-company">
+                                    <h3>Fire Safety Solutions</h3>
+                                    <p>Professional Kitchen Fire Suppression</p>
+                                </div>
+                            </div>
+                            <div class="quotation-details">
+                                <div class="detail-section">
+                                    <h4>Quotation For:</h4>
+                                    <p><strong>${calculation.project.client}</strong></p>
+                                    <p>Project: ${calculation.project.name}</p>
+                                </div>
+                                <div class="detail-section">
+                                    <h4>Quotation Details:</h4>
+                                    <p>Date: ${new Date(calculation.timestamp).toLocaleDateString()}</p>
+                                    <p>Valid Until: ${formattedValidityDate}</p>
+                                    <p>Currency: ${calculation.project.currency}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <h3 class="card-title"><i class="fas fa-clipboard-list"></i> System Summary</h3>
+                            <ul class="scope-list">
+                                <li>Wet chemical suppression system with ${calculation.results.cylinders} cylinder${calculation.results.cylinders > 1 ? 's' : ''}</li>
+                                <li>${calculation.results.nozzles.total} discharge nozzles</li>
+                                <li>Approximately ${Math.round(calculation.results.pipingLength)} meters of piping</li>
+                                <li>Professional installation and commissioning</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="card">
+                            <h3 class="card-title"><i class="fas fa-receipt"></i> Quotation Summary</h3>
+                            <div class="quotation-table">
+                                <div class="table-header">
+                                    <div class="col-item">Description</div>
+                                    <div class="col-total">Amount</div>
+                                </div>
+                                ${Object.entries(calculation.results.subtotals).map(([key, value]) => `
+                                    <div class="table-row">
+                                        <div class="col-item">${key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</div>
+                                        <div class="col-total">${formatCost(value)}</div>
+                                    </div>
+                                `).join('')}
+                                <div class="table-row grand-total">
+                                    <div class="col-item"><strong>TOTAL QUOTATION AMOUNT</strong></div>
+                                    <div class="col-total"><strong>${formatCost(calculation.results.totalCost)}</strong></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <h3 class="card-title"><i class="fas fa-file-contract"></i> Terms & Conditions</h3>
+                            <div class="terms-content">
+                                <ol>
+                                    <li>This quotation is valid for 30 days</li>
+                                    <li>Prices are in ${calculation.project.currency}</li>
+                                    <li>Payment terms: 50% advance, 50% upon completion</li>
+                                    <li>Warranty: 12 months on all parts and labor</li>
+                                    <li>All work complies with NFPA 96 and NFPA 17A standards</li>
+                                </ol>
+                                <div class="signature-section">
+                                    <div class="signature-block">
+                                        <p>For Fire Safety Solutions</p>
+                                        <div class="signature-line"></div>
+                                        <p>Authorized Signature</p>
+                                    </div>
+                                    <div class="acceptance-block">
+                                        <p>Accepted By:</p>
+                                        <div class="signature-line"></div>
+                                        <p>Client Signature</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="action-buttons" style="margin-top: 30px;">
+                                <button onclick="window.print()" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-print"></i> Print Quotation
+                                </button>
+                                <a href="results.html" class="btn btn-outline">
+                                    <i class="fas fa-arrow-left"></i> Back to Results
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('Error loading quotation:', error);
+                loading.style.display = 'none';
+                noQuotation.style.display = 'block';
+            }
+        }
     </script>
 </body>
 </html>
