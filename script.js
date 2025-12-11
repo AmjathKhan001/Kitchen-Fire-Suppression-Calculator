@@ -3,14 +3,15 @@
  * Main JavaScript Application
  */
 
-const KFSSCalculator = (function() {
-    // Private variables and state
-    let currentCalculation = null;
-    let recentCalculations = [];
-    let expertMode = false;
+// Global KFSSCalculator object
+const KFSSCalculator = {
+    // State variables
+    currentCalculation: null,
+    recentCalculations: [],
+    expertMode: false,
     
     // Standard appliances database
-    const standardAppliances = [
+    standardAppliances: [
         { id: 'fryer', name: 'Deep Fryer', nozzles: 1, price: 850 },
         { id: 'range', name: 'Cooking Range', nozzles: 2, price: 1200 },
         { id: 'grill', name: 'Griddle/Grill', nozzles: 1, price: 750 },
@@ -19,10 +20,10 @@ const KFSSCalculator = (function() {
         { id: 'oven', name: 'Convection Oven', nozzles: 1, price: 650 },
         { id: 'steamer', name: 'Steamer', nozzles: 1, price: 700 },
         { id: 'dishwasher', name: 'Dishwasher', nozzles: 1, price: 600 }
-    ];
+    ],
     
     // Component pricing (in USD)
-    const pricing = {
+    pricing: {
         nozzle: 85,
         cylinder_5kg: 1200,
         cylinder_10kg: 1900,
@@ -31,60 +32,61 @@ const KFSSCalculator = (function() {
         manual_release: 250,
         installation_labor: 850,
         commissioning: 400
-    };
+    },
     
     // Currency exchange rates (approximate)
-    const exchangeRates = {
+    exchangeRates: {
         USD: 1.0,
         EUR: 0.92,
         INR: 83.0,
         AED: 3.67
-    };
+    },
     
     // Currency symbols
-    const currencySymbols = {
+    currencySymbols: {
         USD: '$',
         EUR: '€',
         INR: '₹',
         AED: 'د.إ'
-    };
+    },
     
     /**
      * Initialize the calculator
      */
-    function init() {
-        console.log('KFSS Calculator initializing...');
-        loadRecentCalculations();
-        initializeAppliances();
-        setupEventListeners();
-        setupExpertModeToggle();
-        updateSummary();
+    init: function() {
+        console.log('Initializing KFSS Calculator...');
+        
+        // Initialize appliances
+        this.initializeAppliances();
+        
+        // Setup event listeners
+        this.setupEventListeners();
+        
+        // Setup expert mode toggle
+        this.setupExpertModeToggle();
+        
+        // Load recent calculations
+        this.loadRecentCalculations();
         
         // Load last calculation if available
-        const lastCalc = localStorage.getItem('kfss_last_calculation');
-        if (lastCalc) {
-            try {
-                currentCalculation = JSON.parse(lastCalc);
-                updateFormFromCalculation();
-                updateSummary();
-            } catch (e) {
-                console.error('Failed to load last calculation:', e);
-            }
-        }
+        this.loadLastCalculation();
         
-        console.log('KFSS Calculator initialized successfully');
-    }
+        // Update summary with initial values
+        this.updateSummary();
+        
+        console.log('KFSS Calculator initialized successfully!');
+    },
     
     /**
      * Initialize appliance list
      */
-    function initializeAppliances() {
+    initializeAppliances: function() {
         const applianceList = document.getElementById('applianceList');
         if (!applianceList) return;
         
         applianceList.innerHTML = '';
         
-        standardAppliances.forEach(appliance => {
+        this.standardAppliances.forEach(appliance => {
             const item = document.createElement('div');
             item.className = 'appliance-item';
             item.dataset.id = appliance.id;
@@ -96,35 +98,35 @@ const KFSSCalculator = (function() {
                 <div class="appliance-nozzles">${appliance.nozzles} nozzle${appliance.nozzles > 1 ? 's' : ''}</div>
             `;
             
-            item.addEventListener('click', function() {
-                this.classList.toggle('selected');
-                updateSummary();
+            item.addEventListener('click', () => {
+                item.classList.toggle('selected');
+                this.updateSummary();
             });
             
             applianceList.appendChild(item);
         });
-    }
+    },
     
     /**
      * Set up event listeners
      */
-    function setupEventListeners() {
+    setupEventListeners: function() {
         // Calculate button
         const calculateBtn = document.getElementById('calculateBtn');
         if (calculateBtn) {
-            calculateBtn.addEventListener('click', performCalculation);
+            calculateBtn.addEventListener('click', () => this.performCalculation());
         }
         
         // Reset button
         const resetBtn = document.getElementById('resetBtn');
         if (resetBtn) {
-            resetBtn.addEventListener('click', resetCalculator);
+            resetBtn.addEventListener('click', () => this.resetCalculator());
         }
         
         // Custom appliance addition
         const addCustomBtn = document.getElementById('addCustomAppliance');
         if (addCustomBtn) {
-            addCustomBtn.addEventListener('click', addCustomAppliance);
+            addCustomBtn.addEventListener('click', () => this.addCustomAppliance());
         }
         
         // Form input listeners for real-time updates
@@ -134,8 +136,8 @@ const KFSSCalculator = (function() {
         inputs.forEach(inputId => {
             const input = document.getElementById(inputId);
             if (input) {
-                input.addEventListener('input', updateSummary);
-                input.addEventListener('change', updateSummary);
+                input.addEventListener('input', () => this.updateSummary());
+                input.addEventListener('change', () => this.updateSummary());
             }
         });
         
@@ -146,15 +148,15 @@ const KFSSCalculator = (function() {
         expertInputs.forEach(inputId => {
             const input = document.getElementById(inputId);
             if (input) {
-                input.addEventListener('change', updateSummary);
+                input.addEventListener('change', () => this.updateSummary());
             }
         });
-    }
+    },
     
     /**
      * Set up expert mode toggle
      */
-    function setupExpertModeToggle() {
+    setupExpertModeToggle: function() {
         const toggle = document.getElementById('expertModeToggle');
         const expertPanel = document.getElementById('expertPanel');
         const expertHoodPanel = document.getElementById('expertHoodPanel');
@@ -163,43 +165,49 @@ const KFSSCalculator = (function() {
         
         // Load expert mode state
         const savedMode = localStorage.getItem('kfss_expert_mode');
-        expertMode = savedMode === 'true';
-        toggle.checked = expertMode;
+        this.expertMode = savedMode === 'true';
+        toggle.checked = this.expertMode;
         
         // Set initial state
-        updateExpertModeDisplay();
+        this.updateExpertModeDisplay();
         
         // Add event listener
-        toggle.addEventListener('change', function() {
-            expertMode = this.checked;
-            localStorage.setItem('kfss_expert_mode', expertMode);
-            updateExpertModeDisplay();
-            updateSummary();
+        toggle.addEventListener('change', (e) => {
+            this.expertMode = e.target.checked;
+            localStorage.setItem('kfss_expert_mode', this.expertMode);
+            this.updateExpertModeDisplay();
+            this.updateSummary();
         });
+    },
+    
+    /**
+     * Update expert mode display
+     */
+    updateExpertModeDisplay: function() {
+        const expertPanel = document.getElementById('expertPanel');
+        const expertHoodPanel = document.getElementById('expertHoodPanel');
         
-        function updateExpertModeDisplay() {
-            if (expertPanel) {
-                if (expertMode) {
-                    expertPanel.classList.add('expanded');
-                } else {
-                    expertPanel.classList.remove('expanded');
-                }
-            }
-            
-            if (expertHoodPanel) {
-                if (expertMode) {
-                    expertHoodPanel.classList.add('expanded');
-                } else {
-                    expertHoodPanel.classList.remove('expanded');
-                }
+        if (expertPanel) {
+            if (this.expertMode) {
+                expertPanel.classList.add('expanded');
+            } else {
+                expertPanel.classList.remove('expanded');
             }
         }
-    }
+        
+        if (expertHoodPanel) {
+            if (this.expertMode) {
+                expertHoodPanel.classList.add('expanded');
+            } else {
+                expertHoodPanel.classList.remove('expanded');
+            }
+        }
+    },
     
     /**
      * Update the summary panel with current values
      */
-    function updateSummary() {
+    updateSummary: function() {
         // Get form values
         const hoodLength = parseFloat(document.getElementById('hoodLength')?.value) || 3.0;
         const hoodDepth = parseFloat(document.getElementById('hoodDepth')?.value) || 1.2;
@@ -228,47 +236,47 @@ const KFSSCalculator = (function() {
         
         // Calculate cost
         let totalCost = 0;
-        totalCost += totalNozzles * pricing.nozzle;
-        totalCost += cylindersRequired * (cylindersRequired > 1 ? pricing.cylinder_10kg : pricing.cylinder_5kg);
-        totalCost += pipingLength * pricing.piping_per_meter;
-        totalCost += pricing.hood_agent_tank;
-        totalCost += pricing.manual_release;
-        totalCost += pricing.installation_labor;
-        totalCost += pricing.commissioning;
+        totalCost += totalNozzles * this.pricing.nozzle;
+        totalCost += cylindersRequired * (cylindersRequired > 1 ? this.pricing.cylinder_10kg : this.pricing.cylinder_5kg);
+        totalCost += pipingLength * this.pricing.piping_per_meter;
+        totalCost += this.pricing.hood_agent_tank;
+        totalCost += this.pricing.manual_release;
+        totalCost += this.pricing.installation_labor;
+        totalCost += this.pricing.commissioning;
         totalCost += applianceCost;
         
         // Apply currency conversion
-        const exchangeRate = exchangeRates[currency] || 1;
+        const exchangeRate = this.exchangeRates[currency] || 1;
         totalCost *= exchangeRate;
         
         // Update summary display
-        updateElementText('summaryHoodArea', hoodArea.toFixed(1) + ' m²');
-        updateElementText('summaryPlenumNozzles', plenumSections);
-        updateElementText('summaryDuctNozzles', ductSections);
-        updateElementText('summaryApplianceNozzles', applianceNozzles);
-        updateElementText('summaryTotalNozzles', totalNozzles);
-        updateElementText('summaryCylinders', cylindersRequired);
-        updateElementText('summaryAgentWeight', agentWeight.toFixed(1) + ' kg');
-        updateElementText('summaryPiping', Math.round(pipingLength) + ' m');
-        updateElementText('summaryCurrency', currency);
+        this.updateElementText('summaryHoodArea', hoodArea.toFixed(1) + ' m²');
+        this.updateElementText('summaryPlenumNozzles', plenumSections);
+        this.updateElementText('summaryDuctNozzles', ductSections);
+        this.updateElementText('summaryApplianceNozzles', applianceNozzles);
+        this.updateElementText('summaryTotalNozzles', totalNozzles);
+        this.updateElementText('summaryCylinders', cylindersRequired);
+        this.updateElementText('summaryAgentWeight', agentWeight.toFixed(1) + ' kg');
+        this.updateElementText('summaryPiping', Math.round(pipingLength) + ' m');
+        this.updateElementText('summaryCurrency', currency);
         
         // Format cost with currency symbol
-        const symbol = currencySymbols[currency] || '$';
+        const symbol = this.currencySymbols[currency] || '$';
         const formattedCost = symbol + totalCost.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-        updateElementText('summaryCost', formattedCost);
+        this.updateElementText('summaryCost', formattedCost);
         
         // Update project info in results nav
         const projectName = document.getElementById('projectName')?.value || 'Project Name';
         const clientName = document.getElementById('clientName')?.value || 'Client Name';
         
-        updateElementText('resultProjectName', projectName);
-        updateElementText('resultClientName', clientName);
-    }
+        this.updateElementText('resultProjectName', projectName);
+        this.updateElementText('resultClientName', clientName);
+    },
     
     /**
      * Perform the full calculation
      */
-    function performCalculation() {
+    performCalculation: function() {
         // Get all form values
         const projectName = document.getElementById('projectName')?.value || 'Unnamed Project';
         const clientName = document.getElementById('clientName')?.value || 'Unnamed Client';
@@ -305,7 +313,7 @@ const KFSSCalculator = (function() {
         
         selectedApplianceItems.forEach(item => {
             const applianceId = item.dataset.id;
-            const appliance = standardAppliances.find(a => a.id === applianceId);
+            const appliance = this.standardAppliances.find(a => a.id === applianceId);
             if (appliance) {
                 selectedAppliances.push({
                     id: appliance.id,
@@ -322,17 +330,17 @@ const KFSSCalculator = (function() {
         const totalNozzles = plenumSections + ductSections + applianceNozzles;
         const cylindersRequired = Math.ceil(totalNozzles / 6);
         const agentWeight = cylindersRequired * 5.7;
-        const pipingLength = (totalNozzles * 2) + 5 + (expertMode ? ductLength : 0);
+        const pipingLength = (totalNozzles * 2) + 5 + (this.expertMode ? ductLength : 0);
         
         // Calculate costs
         let subtotals = {
-            nozzles: totalNozzles * pricing.nozzle,
-            cylinders: cylindersRequired * (cylindersRequired > 1 ? pricing.cylinder_10kg : pricing.cylinder_5kg),
-            piping: pipingLength * pricing.piping_per_meter,
-            hoodAgentTank: pricing.hood_agent_tank,
-            manualRelease: pricing.manual_release,
-            installationLabor: pricing.installation_labor,
-            commissioning: pricing.commissioning,
+            nozzles: totalNozzles * this.pricing.nozzle,
+            cylinders: cylindersRequired * (cylindersRequired > 1 ? this.pricing.cylinder_10kg : this.pricing.cylinder_5kg),
+            piping: pipingLength * this.pricing.piping_per_meter,
+            hoodAgentTank: this.pricing.hood_agent_tank,
+            manualRelease: this.pricing.manual_release,
+            installationLabor: this.pricing.installation_labor,
+            commissioning: this.pricing.commissioning,
             appliances: selectedAppliances.reduce((sum, app) => sum + app.price, 0)
         };
         
@@ -346,11 +354,11 @@ const KFSSCalculator = (function() {
         let totalCost = Object.values(subtotals).reduce((sum, val) => sum + val, 0);
         
         // Apply currency conversion
-        const exchangeRate = exchangeRates[currency] || 1;
+        const exchangeRate = this.exchangeRates[currency] || 1;
         totalCost *= exchangeRate;
         
         // Create calculation object
-        currentCalculation = {
+        this.currentCalculation = {
             id: Date.now(),
             timestamp: new Date().toISOString(),
             project: {
@@ -395,22 +403,22 @@ const KFSSCalculator = (function() {
         };
         
         // Save to localStorage
-        localStorage.setItem('kfss_last_calculation', JSON.stringify(currentCalculation));
+        localStorage.setItem('kfss_last_calculation', JSON.stringify(this.currentCalculation));
         
         // Add to recent calculations
-        addToRecentCalculations(currentCalculation);
+        this.addToRecentCalculations(this.currentCalculation);
         
         // Update UI
-        updateRecentCalculationsDisplay();
+        this.updateRecentCalculationsDisplay();
         
         // Redirect to results page
         window.location.href = 'results.html';
-    }
+    },
     
     /**
      * Add custom appliance
      */
-    function addCustomAppliance() {
+    addCustomAppliance: function() {
         const nameInput = document.getElementById('customAppliance');
         const nozzlesInput = document.getElementById('customNozzles');
         const applianceList = document.getElementById('applianceList');
@@ -440,9 +448,9 @@ const KFSSCalculator = (function() {
             <div class="appliance-nozzles">${nozzles} nozzle${nozzles > 1 ? 's' : ''}</div>
         `;
         
-        item.addEventListener('click', function() {
-            this.classList.toggle('selected');
-            updateSummary();
+        item.addEventListener('click', () => {
+            item.classList.toggle('selected');
+            this.updateSummary();
         });
         
         applianceList.appendChild(item);
@@ -452,13 +460,13 @@ const KFSSCalculator = (function() {
         nozzlesInput.value = '1';
         
         // Update summary
-        updateSummary();
-    }
+        this.updateSummary();
+    },
     
     /**
      * Reset calculator to default values
      */
-    function resetCalculator() {
+    resetCalculator: function() {
         if (!confirm('Are you sure you want to reset all inputs to default values?')) {
             return;
         }
@@ -492,104 +500,70 @@ const KFSSCalculator = (function() {
         customAppliances.forEach(item => item.remove());
         
         // Clear current calculation
-        currentCalculation = null;
+        this.currentCalculation = null;
         localStorage.removeItem('kfss_last_calculation');
         
         // Update UI
-        updateSummary();
-        updateRecentCalculationsDisplay();
-    }
+        this.updateSummary();
+        this.updateRecentCalculationsDisplay();
+    },
     
     /**
-     * Update form from saved calculation
+     * Load last calculation
      */
-    function updateFormFromCalculation() {
-        if (!currentCalculation) return;
-        
-        const calc = currentCalculation;
-        
-        // Update project info
-        document.getElementById('projectName').value = calc.project.name;
-        document.getElementById('clientName').value = calc.project.client;
-        document.getElementById('projectLocation').value = calc.project.location || '';
-        document.getElementById('currency').value = calc.project.currency;
-        
-        // Update hood configuration
-        document.getElementById('hoodLength').value = calc.configuration.hood.length;
-        document.getElementById('hoodDepth').value = calc.configuration.hood.depth;
-        document.getElementById('plenumSections').value = calc.configuration.hood.plenumSections;
-        document.getElementById('ductSections').value = calc.configuration.hood.ductSections;
-        
-        // Update expert fields if available
-        if (calc.configuration.hood.material) {
-            document.getElementById('hoodMaterial').value = calc.configuration.hood.material;
+    loadLastCalculation: function() {
+        const lastCalc = localStorage.getItem('kfss_last_calculation');
+        if (lastCalc) {
+            try {
+                this.currentCalculation = JSON.parse(lastCalc);
+                this.updateSummary();
+            } catch (e) {
+                console.error('Failed to load last calculation:', e);
+            }
         }
-        if (calc.configuration.hood.ductLength) {
-            document.getElementById('ductLength').value = calc.configuration.hood.ductLength;
-        }
-        if (calc.configuration.system.nozzleType) {
-            document.getElementById('nozzleType').value = calc.configuration.system.nozzleType;
-        }
-        if (calc.configuration.system.pipeMaterial) {
-            document.getElementById('pipeMaterial').value = calc.configuration.system.pipeMaterial;
-        }
-        if (calc.configuration.system.safetyFactor) {
-            document.getElementById('safetyFactor').value = calc.configuration.system.safetyFactor;
-        }
-        if (calc.configuration.system.pressureRating) {
-            document.getElementById('pressureRating').value = calc.configuration.system.pressureRating;
-        }
-        if (calc.configuration.system.additionalNotes) {
-            document.getElementById('additionalNotes').value = calc.configuration.system.additionalNotes;
-        }
-        
-        // Update appliances (simplified - would need more complex logic for full restoration)
-        // For now, just update the summary
-        
-        updateSummary();
-    }
+    },
     
     /**
      * Add calculation to recent list
      */
-    function addToRecentCalculations(calculation) {
+    addToRecentCalculations: function(calculation) {
         // Add to beginning of array
-        recentCalculations.unshift(calculation);
+        this.recentCalculations.unshift(calculation);
         
         // Keep only last 5
-        if (recentCalculations.length > 5) {
-            recentCalculations = recentCalculations.slice(0, 5);
+        if (this.recentCalculations.length > 5) {
+            this.recentCalculations = this.recentCalculations.slice(0, 5);
         }
         
         // Save to localStorage
-        localStorage.setItem('kfss_recent_calculations', JSON.stringify(recentCalculations));
-    }
+        localStorage.setItem('kfss_recent_calculations', JSON.stringify(this.recentCalculations));
+    },
     
     /**
      * Load recent calculations from localStorage
      */
-    function loadRecentCalculations() {
+    loadRecentCalculations: function() {
         try {
             const saved = localStorage.getItem('kfss_recent_calculations');
             if (saved) {
-                recentCalculations = JSON.parse(saved);
+                this.recentCalculations = JSON.parse(saved);
             }
         } catch (e) {
             console.error('Failed to load recent calculations:', e);
-            recentCalculations = [];
+            this.recentCalculations = [];
         }
         
-        updateRecentCalculationsDisplay();
-    }
+        this.updateRecentCalculationsDisplay();
+    },
     
     /**
      * Update recent calculations display
      */
-    function updateRecentCalculationsDisplay() {
+    updateRecentCalculationsDisplay: function() {
         const container = document.getElementById('recentCalculations');
         if (!container) return;
         
-        if (recentCalculations.length === 0) {
+        if (this.recentCalculations.length === 0) {
             container.innerHTML = `
                 <div class="empty-state">
                     <i class="fas fa-clock"></i>
@@ -602,12 +576,11 @@ const KFSSCalculator = (function() {
         
         let html = '<div class="recent-list">';
         
-        recentCalculations.forEach((calc, index) => {
+        this.recentCalculations.forEach((calc, index) => {
             const date = new Date(calc.timestamp);
             const formattedDate = date.toLocaleDateString();
-            const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             
-            const symbol = currencySymbols[calc.project.currency] || '$';
+            const symbol = this.currencySymbols[calc.project.currency] || '$';
             const formattedCost = symbol + calc.results.totalCost.toFixed(0);
             
             html += `
@@ -633,31 +606,43 @@ const KFSSCalculator = (function() {
         
         // Add event listeners to load buttons
         container.querySelectorAll('.btn-recent-load').forEach(button => {
-            button.addEventListener('click', function() {
-                const id = parseInt(this.dataset.id);
-                loadRecentCalculation(id);
+            button.addEventListener('click', (e) => {
+                const id = parseInt(e.target.closest('.btn-recent-load').dataset.id);
+                this.loadRecentCalculation(id);
             });
         });
-    }
+    },
     
     /**
      * Load a recent calculation
      */
-    function loadRecentCalculation(id) {
-        const calculation = recentCalculations.find(calc => calc.id === id);
+    loadRecentCalculation: function(id) {
+        const calculation = this.recentCalculations.find(calc => calc.id === id);
         if (!calculation) return;
         
-        currentCalculation = calculation;
+        this.currentCalculation = calculation;
         localStorage.setItem('kfss_last_calculation', JSON.stringify(calculation));
-        updateFormFromCalculation();
+        
+        // Update form fields
+        document.getElementById('projectName').value = calculation.project.name;
+        document.getElementById('clientName').value = calculation.project.client;
+        document.getElementById('projectLocation').value = calculation.project.location || '';
+        document.getElementById('currency').value = calculation.project.currency;
+        document.getElementById('hoodLength').value = calculation.configuration.hood.length;
+        document.getElementById('hoodDepth').value = calculation.configuration.hood.depth;
+        document.getElementById('plenumSections').value = calculation.configuration.hood.plenumSections;
+        document.getElementById('ductSections').value = calculation.configuration.hood.ductSections;
+        
+        // Update summary
+        this.updateSummary();
         
         alert(`Loaded calculation: ${calculation.project.name}`);
-    }
+    },
     
     /**
      * Display results on results.html
      */
-    function displayResults() {
+    displayResults: function() {
         const container = document.getElementById('resultsContent');
         const loading = document.getElementById('loadingResults');
         const noResults = document.getElementById('noResults');
@@ -673,13 +658,13 @@ const KFSSCalculator = (function() {
                 return;
             }
             
-            currentCalculation = JSON.parse(saved);
+            this.currentCalculation = JSON.parse(saved);
             
             // Hide loading, show results
             if (loading) loading.style.display = 'none';
             
             // Generate results HTML
-            const resultsHTML = generateResultsHTML(currentCalculation);
+            const resultsHTML = this.generateResultsHTML(this.currentCalculation);
             container.insertAdjacentHTML('beforeend', resultsHTML);
             
         } catch (error) {
@@ -687,14 +672,14 @@ const KFSSCalculator = (function() {
             if (loading) loading.style.display = 'none';
             if (noResults) noResults.style.display = 'block';
         }
-    }
+    },
     
     /**
      * Generate HTML for results display
      */
-    function generateResultsHTML(calculation) {
+    generateResultsHTML: function(calculation) {
         const calc = calculation;
-        const symbol = currencySymbols[calc.project.currency] || '$';
+        const symbol = this.currencySymbols[calc.project.currency] || '$';
         const exchangeRate = calc.results.exchangeRate || 1;
         
         // Format costs
@@ -838,12 +823,12 @@ const KFSSCalculator = (function() {
                 </div>
             </div>
         `;
-    }
+    },
     
     /**
      * Display quotation on quotation.html
      */
-    function displayQuotation() {
+    displayQuotation: function() {
         const container = document.getElementById('quotationContent');
         const loading = document.getElementById('loadingQuotation');
         const noQuotation = document.getElementById('noQuotation');
@@ -859,13 +844,13 @@ const KFSSCalculator = (function() {
                 return;
             }
             
-            currentCalculation = JSON.parse(saved);
+            this.currentCalculation = JSON.parse(saved);
             
             // Hide loading, show quotation
             if (loading) loading.style.display = 'none';
             
             // Generate quotation HTML
-            const quotationHTML = generateQuotationHTML(currentCalculation);
+            const quotationHTML = this.generateQuotationHTML(this.currentCalculation);
             container.insertAdjacentHTML('beforeend', quotationHTML);
             
         } catch (error) {
@@ -873,14 +858,14 @@ const KFSSCalculator = (function() {
             if (loading) loading.style.display = 'none';
             if (noQuotation) noQuotation.style.display = 'block';
         }
-    }
+    },
     
     /**
      * Generate HTML for quotation
      */
-    function generateQuotationHTML(calculation) {
+    generateQuotationHTML: function(calculation) {
         const calc = calculation;
-        const symbol = currencySymbols[calc.project.currency] || '$';
+        const symbol = this.currencySymbols[calc.project.currency] || '$';
         const exchangeRate = calc.results.exchangeRate || 1;
         
         // Format costs
@@ -1093,25 +1078,15 @@ const KFSSCalculator = (function() {
                 </div>
             </div>
         `;
-    }
+    },
     
     /**
      * Helper function to update element text
      */
-    function updateElementText(id, text) {
+    updateElementText: function(id, text) {
         const element = document.getElementById(id);
         if (element) {
             element.textContent = text;
         }
     }
-    
-    // Public API
-    return {
-        init: init,
-        performCalculation: performCalculation,
-        displayResults: displayResults,
-        displayQuotation: displayQuotation,
-        resetCalculator: resetCalculator,
-        updateSummary: updateSummary
-    };
-})();
+};
