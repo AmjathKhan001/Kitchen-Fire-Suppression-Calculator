@@ -25,6 +25,210 @@
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
+    
+    <style>
+        /* Additional styles for quotation page */
+        .quotation-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .quotation-header-card {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            color: white;
+        }
+        
+        .quotation-header-card .card-title {
+            color: white;
+            border-bottom-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .quotation-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .quotation-title h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .quote-number {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .quotation-company {
+            text-align: right;
+        }
+        
+        .quotation-company h3 {
+            color: white;
+            margin-bottom: 8px;
+        }
+        
+        .quotation-company p {
+            margin-bottom: 4px;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        
+        .quotation-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: var(--radius-sm);
+        }
+        
+        @media (max-width: 768px) {
+            .quotation-details {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .detail-section h4 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .detail-section p {
+            margin-bottom: 5px;
+        }
+        
+        .scope-list {
+            padding-left: 20px;
+            margin-top: 15px;
+        }
+        
+        .scope-list li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .quotation-table {
+            margin-top: 20px;
+            border: 1px solid #eee;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+        
+        .table-header {
+            display: grid;
+            grid-template-columns: 3fr 0.5fr 1fr 1fr;
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .table-row {
+            display: grid;
+            grid-template-columns: 3fr 0.5fr 1fr 1fr;
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+        
+        .table-row:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+        
+        .table-row:hover {
+            background-color: rgba(198, 40, 40, 0.05);
+        }
+        
+        .col-item {
+            text-align: left;
+        }
+        
+        .col-qty, .col-unit, .col-total {
+            text-align: center;
+        }
+        
+        .category-header {
+            background-color: var(--gray-light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        
+        .total-row {
+            background-color: #f8f9fa;
+            font-size: 1.1rem;
+            border-top: 2px solid #dee2e6;
+        }
+        
+        .grand-total {
+            background-color: var(--primary);
+            color: white;
+            font-size: 1.2rem;
+            border-bottom: none !important;
+        }
+        
+        .terms-content {
+            line-height: 1.6;
+        }
+        
+        .terms-content ol {
+            padding-left: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .terms-content li {
+            margin-bottom: 10px;
+        }
+        
+        .signature-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #eee;
+        }
+        
+        @media (max-width: 768px) {
+            .signature-section {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+        
+        .signature-block, .acceptance-block {
+            text-align: center;
+        }
+        
+        .signature-line {
+            height: 1px;
+            background-color: #333;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .signature-line:after {
+            content: "";
+            position: absolute;
+            top: -15px;
+            left: 0;
+            right: 0;
+            height: 30px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .print-actions {
+            margin-left: auto;
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -159,6 +363,10 @@
                 setTimeout(function() {
                     KFSSCalculator.displayQuotation();
                 }, 100);
+            } else {
+                console.error('KFSSCalculator is not defined. Check if script.js is loaded correctly.');
+                document.getElementById('loadingQuotation').style.display = 'none';
+                document.getElementById('noQuotation').style.display = 'block';
             }
         });
     </script>
