@@ -75,6 +75,99 @@
                 AED: 'د.إ'
             },
             
+            // Safety Features
+            SafetyFeatures: {
+                minRequirements: {
+                    hoodArea: 0.5,
+                    nozzlesPerAppliance: 1,
+                    maxNozzlesPerCylinder: 6,
+                    minPlenumSections: 1,
+                    minHoodLength: 0.5,
+                    minHoodDepth: 0.5
+                },
+                
+                warnings: [],
+                
+                checkRequirements: function() {
+                    this.warnings = [];
+                    
+                    const hoodLength = parseFloat(document.getElementById('hoodLength')?.value) || 0;
+                    const hoodDepth = parseFloat(document.getElementById('hoodDepth')?.value) || 0;
+                    const hoodArea = hoodLength * hoodDepth;
+                    const plenumSections = parseInt(document.getElementById('plenumSections')?.value) || 0;
+                    const ductSections = parseInt(document.getElementById('ductSections')?.value) || 0;
+                    
+                    if (hoodArea < this.minRequirements.hoodArea) {
+                        this.warnings.push(`Hood area (${hoodArea.toFixed(1)} m²) is below minimum recommended (${this.minRequirements.hoodArea} m²)`);
+                    }
+                    
+                    if (plenumSections < this.minRequirements.minPlenumSections) {
+                        this.warnings.push(`Minimum ${this.minRequirements.minPlenumSections} plenum section required`);
+                    }
+                    
+                    if (hoodLength < this.minRequirements.minHoodLength) {
+                        this.warnings.push(`Hood length should be at least ${this.minRequirements.minHoodLength} meters`);
+                    }
+                    
+                    if (hoodDepth < this.minRequirements.minHoodDepth) {
+                        this.warnings.push(`Hood depth should be at least ${this.minRequirements.minHoodDepth} meters`);
+                    }
+                    
+                    const selectedAppliances = document.querySelectorAll('.appliance-item.selected');
+                    let applianceNozzles = 0;
+                    selectedAppliances.forEach(item => {
+                        applianceNozzles += parseInt(item.dataset.nozzles) || 1;
+                    });
+                    
+                    const totalNozzles = plenumSections + ductSections + applianceNozzles;
+                    const cylindersRequired = Math.ceil(totalNozzles / this.minRequirements.maxNozzlesPerCylinder);
+                    
+                    if (cylindersRequired > 3) {
+                        this.warnings.push(`System requires ${cylindersRequired} cylinders. Consider redesign for better efficiency.`);
+                    }
+                    
+                    return this.warnings;
+                },
+                
+                displayWarnings: function() {
+                    const warningContainer = document.getElementById('safetyWarnings');
+                    if (!warningContainer) return;
+                    
+                    const warnings = this.checkRequirements();
+                    
+                    if (warnings.length === 0) {
+                        warningContainer.innerHTML = `
+                            <div class="safety-status safe">
+                                <i class="fas fa-check-circle"></i>
+                                <div>
+                                    <strong>All safety requirements met</strong>
+                                    <small>System design meets minimum NFPA standards</small>
+                                </div>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    let html = `
+                        <div class="safety-status warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div>
+                                <strong>Safety Recommendations</strong>
+                                <small>${warnings.length} item${warnings.length > 1 ? 's' : ''} to review</small>
+                            </div>
+                        </div>
+                        <ul class="warning-list">
+                    `;
+                    
+                    warnings.forEach(warning => {
+                        html += `<li><i class="fas fa-info-circle"></i> ${warning}</li>`;
+                    });
+                    
+                    html += '</ul>';
+                    warningContainer.innerHTML = html;
+                }
+            },
+            
             /**
              * Initialize the calculator
              */
@@ -98,6 +191,9 @@
                 
                 // Update summary with initial values
                 this.updateSummary();
+                
+                // Display safety warnings
+                this.SafetyFeatures.displayWarnings();
                 
                 console.log('KFSS Calculator initialized successfully!');
             },
@@ -126,6 +222,7 @@
                     item.addEventListener('click', () => {
                         item.classList.toggle('selected');
                         this.updateSummary();
+                        this.SafetyFeatures.displayWarnings();
                     });
                     
                     applianceList.appendChild(item);
@@ -161,8 +258,14 @@
                 inputs.forEach(inputId => {
                     const input = document.getElementById(inputId);
                     if (input) {
-                        input.addEventListener('input', () => this.updateSummary());
-                        input.addEventListener('change', () => this.updateSummary());
+                        input.addEventListener('input', () => {
+                            this.updateSummary();
+                            this.SafetyFeatures.displayWarnings();
+                        });
+                        input.addEventListener('change', () => {
+                            this.updateSummary();
+                            this.SafetyFeatures.displayWarnings();
+                        });
                     }
                 });
                 
@@ -173,9 +276,37 @@
                 expertInputs.forEach(inputId => {
                     const input = document.getElementById(inputId);
                     if (input) {
-                        input.addEventListener('change', () => this.updateSummary());
+                        input.addEventListener('change', () => {
+                            this.updateSummary();
+                            this.SafetyFeatures.displayWarnings();
+                        });
                     }
                 });
+                
+                // Export buttons
+                const exportJson = document.getElementById('exportJson');
+                if (exportJson) {
+                    exportJson.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.exportCalculation('json');
+                    });
+                }
+                
+                const exportCsv = document.getElementById('exportCsv');
+                if (exportCsv) {
+                    exportCsv.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.exportCalculation('csv');
+                    });
+                }
+                
+                const shareLink = document.getElementById('shareLink');
+                if (shareLink) {
+                    shareLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.generateShareableLink();
+                    });
+                }
             },
             
             /**
@@ -202,6 +333,7 @@
                     localStorage.setItem('kfss_expert_mode', this.expertMode);
                     this.updateExpertModeDisplay();
                     this.updateSummary();
+                    this.SafetyFeatures.displayWarnings();
                 });
             },
             
@@ -332,6 +464,13 @@
                     return;
                 }
                 
+                // Check safety warnings
+                const warnings = this.SafetyFeatures.checkRequirements();
+                if (warnings.length > 0) {
+                    const proceed = confirm(`There are ${warnings.length} safety recommendations. Do you want to proceed anyway?\n\nClick OK to continue, Cancel to review.`);
+                    if (!proceed) return;
+                }
+                
                 // Get selected appliances
                 const selectedAppliances = [];
                 const selectedApplianceItems = document.querySelectorAll('.appliance-item.selected');
@@ -423,7 +562,8 @@
                         pipingLength: pipingLength,
                         subtotals: subtotals,
                         totalCost: totalCost,
-                        exchangeRate: exchangeRate
+                        exchangeRate: exchangeRate,
+                        safetyWarnings: warnings
                     }
                 };
                 
@@ -476,6 +616,7 @@
                 item.addEventListener('click', () => {
                     item.classList.toggle('selected');
                     this.updateSummary();
+                    this.SafetyFeatures.displayWarnings();
                 });
                 
                 applianceList.appendChild(item);
@@ -484,8 +625,9 @@
                 nameInput.value = '';
                 nozzlesInput.value = '1';
                 
-                // Update summary
+                // Update summary and safety warnings
                 this.updateSummary();
+                this.SafetyFeatures.displayWarnings();
             },
             
             /**
@@ -531,6 +673,7 @@
                 // Update UI
                 this.updateSummary();
                 this.updateRecentCalculationsDisplay();
+                this.SafetyFeatures.displayWarnings();
             },
             
             /**
@@ -650,10 +793,201 @@
                 document.getElementById('plenumSections').value = calculation.configuration.hood.plenumSections;
                 document.getElementById('ductSections').value = calculation.configuration.hood.ductSections;
                 
-                // Update summary
+                // Update expert fields if they exist
+                if (calculation.configuration.hood.material) {
+                    document.getElementById('hoodMaterial').value = calculation.configuration.hood.material;
+                }
+                if (calculation.configuration.hood.ductLength) {
+                    document.getElementById('ductLength').value = calculation.configuration.hood.ductLength;
+                }
+                if (calculation.configuration.system.nozzleType) {
+                    document.getElementById('nozzleType').value = calculation.configuration.system.nozzleType;
+                }
+                if (calculation.configuration.system.pipeMaterial) {
+                    document.getElementById('pipeMaterial').value = calculation.configuration.system.pipeMaterial;
+                }
+                if (calculation.configuration.system.safetyFactor) {
+                    document.getElementById('safetyFactor').value = calculation.configuration.system.safetyFactor;
+                }
+                if (calculation.configuration.system.pressureRating) {
+                    document.getElementById('pressureRating').value = calculation.configuration.system.pressureRating;
+                }
+                if (calculation.configuration.system.additionalNotes) {
+                    document.getElementById('additionalNotes').value = calculation.configuration.system.additionalNotes;
+                }
+                
+                // Clear and reselect appliances
+                document.querySelectorAll('.appliance-item.selected').forEach(item => {
+                    item.classList.remove('selected');
+                });
+                
+                // Clear custom appliances
+                const customAppliances = document.querySelectorAll('.appliance-item[data-id^="custom-"]');
+                customAppliances.forEach(item => item.remove());
+                
+                // Add appliances from calculation
+                if (calculation.configuration.appliances && calculation.configuration.appliances.length > 0) {
+                    calculation.configuration.appliances.forEach(appliance => {
+                        if (appliance.id.startsWith('custom-')) {
+                            // Add custom appliance
+                            this.addCustomApplianceFromData(appliance);
+                        } else {
+                            // Select standard appliance
+                            const applianceItem = document.querySelector(`.appliance-item[data-id="${appliance.id}"]`);
+                            if (applianceItem) {
+                                applianceItem.classList.add('selected');
+                            }
+                        }
+                    });
+                }
+                
+                // Update summary and safety warnings
                 this.updateSummary();
+                this.SafetyFeatures.displayWarnings();
                 
                 alert(`Loaded calculation: ${calculation.project.name}`);
+            },
+            
+            /**
+             * Helper to add custom appliance from data
+             */
+            addCustomApplianceFromData: function(appliance) {
+                const applianceList = document.getElementById('applianceList');
+                
+                const item = document.createElement('div');
+                item.className = 'appliance-item selected';
+                item.dataset.id = appliance.id;
+                item.dataset.nozzles = appliance.nozzles;
+                item.dataset.price = appliance.price;
+                
+                item.innerHTML = `
+                    <div class="appliance-name">${appliance.name}</div>
+                    <div class="appliance-nozzles">${appliance.nozzles} nozzle${appliance.nozzles > 1 ? 's' : ''}</div>
+                `;
+                
+                item.addEventListener('click', () => {
+                    item.classList.toggle('selected');
+                    this.updateSummary();
+                    this.SafetyFeatures.displayWarnings();
+                });
+                
+                applianceList.appendChild(item);
+            },
+            
+            /**
+             * Export calculation data
+             */
+            exportCalculation: function(format = 'json') {
+                if (!this.currentCalculation) {
+                    const saved = localStorage.getItem('kfss_last_calculation');
+                    if (!saved) {
+                        alert('No calculation to export. Please perform a calculation first.');
+                        return;
+                    }
+                    this.currentCalculation = JSON.parse(saved);
+                }
+                
+                if (format === 'json') {
+                    const dataStr = JSON.stringify(this.currentCalculation, null, 2);
+                    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                    const exportFileDefaultName = `kfss-calculation-${this.currentCalculation.id}.json`;
+                    
+                    const linkElement = document.createElement('a');
+                    linkElement.setAttribute('href', dataUri);
+                    linkElement.setAttribute('download', exportFileDefaultName);
+                    linkElement.click();
+                } else if (format === 'csv') {
+                    this.exportAsCSV();
+                }
+            },
+            
+            /**
+             * Export as CSV
+             */
+            exportAsCSV: function() {
+                if (!this.currentCalculation) {
+                    alert('No calculation to export');
+                    return;
+                }
+                
+                const calc = this.currentCalculation;
+                const symbol = this.currencySymbols[calc.project.currency] || '$';
+                
+                let csv = 'KFSS Calculator Export\n';
+                csv += 'Date,' + new Date(calc.timestamp).toLocaleString() + '\n';
+                csv += 'Project,' + calc.project.name + '\n';
+                csv += 'Client,' + calc.project.client + '\n';
+                csv += 'Currency,' + calc.project.currency + '\n\n';
+                
+                csv += 'System Configuration\n';
+                csv += 'Hood Length,' + calc.configuration.hood.length + ' m\n';
+                csv += 'Hood Depth,' + calc.configuration.hood.depth + ' m\n';
+                csv += 'Hood Area,' + calc.configuration.hood.area.toFixed(1) + ' m²\n';
+                csv += 'Plenum Sections,' + calc.configuration.hood.plenumSections + '\n';
+                csv += 'Duct Sections,' + calc.configuration.hood.ductSections + '\n\n';
+                
+                csv += 'Cost Breakdown\n';
+                csv += 'Description,Quantity,Unit Price,Total\n';
+                
+                Object.entries(calc.results.subtotals).forEach(([key, value]) => {
+                    const label = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                    csv += `${label},1,${symbol}${value.toFixed(2)},${symbol}${value.toFixed(2)}\n`;
+                });
+                
+                csv += `\nTotal System Cost,${symbol}${calc.results.totalCost.toFixed(2)}\n`;
+                
+                const dataUri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+                const exportFileDefaultName = `kfss-calculation-${calc.id}.csv`;
+                
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileDefaultName);
+                linkElement.click();
+            },
+            
+            /**
+             * Generate shareable link
+             */
+            generateShareableLink: function() {
+                if (!this.currentCalculation) {
+                    const saved = localStorage.getItem('kfss_last_calculation');
+                    if (!saved) {
+                        alert('No calculation to share. Please perform a calculation first.');
+                        return;
+                    }
+                    this.currentCalculation = JSON.parse(saved);
+                }
+                
+                const data = btoa(JSON.stringify(this.currentCalculation));
+                const link = `${window.location.origin}${window.location.pathname}?data=${data}`;
+                
+                navigator.clipboard.writeText(link).then(() => {
+                    alert('Shareable link copied to clipboard!\n\nYou can send this link to others to view this calculation.');
+                }).catch(() => {
+                    const copyText = prompt('Copy this link to share:', link);
+                    if (copyText) {
+                        alert('Link copied!');
+                    }
+                });
+            },
+            
+            /**
+             * Import from URL parameter
+             */
+            importFromURL: function() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const data = urlParams.get('data');
+                
+                if (data) {
+                    try {
+                        const calculation = JSON.parse(atob(data));
+                        this.currentCalculation = calculation;
+                        localStorage.setItem('kfss_last_calculation', JSON.stringify(calculation));
+                        this.loadRecentCalculation(calculation.id);
+                    } catch (error) {
+                        console.error('Error importing from URL:', error);
+                    }
+                }
             },
             
             /**
@@ -670,11 +1004,159 @@
         // Initialize calculator when page loads
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM loaded, initializing calculator...');
-            if (typeof KFSSCalculator !== 'undefined') {
-                KFSSCalculator.init();
-            }
+            KFSSCalculator.init();
+            KFSSCalculator.importFromURL();
         });
     </script>
+    
+    <style>
+        /* Additional styles for export dropdown */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-toggle {
+            cursor: pointer;
+            position: relative;
+            padding-right: 30px;
+        }
+        
+        .dropdown-toggle:after {
+            content: "▼";
+            font-size: 0.7em;
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background: white;
+            min-width: 180px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: var(--radius-sm);
+            z-index: 100;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        
+        .dropdown-item {
+            display: block;
+            padding: 12px 15px;
+            color: var(--dark);
+            text-decoration: none;
+            border-bottom: 1px solid #eee;
+            transition: var(--transition);
+        }
+        
+        .dropdown-item:hover {
+            background: var(--gray-light);
+            color: var(--primary);
+        }
+        
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-item i {
+            margin-right: 8px;
+            width: 20px;
+        }
+        
+        /* Emergency Guidance Styles */
+        .emergency-guidance {
+            background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+            padding: 3rem 0;
+            margin: 3rem 0;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .emergency-guidance h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 2rem;
+        }
+        
+        .guidance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 1rem;
+        }
+        
+        .guidance-card {
+            background: white;
+            padding: 25px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .guidance-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .guidance-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .guidance-icon.emergency {
+            background: #ffebee;
+            color: var(--primary);
+        }
+        
+        .guidance-icon.warning {
+            background: #fff8e1;
+            color: #f9a825;
+        }
+        
+        .guidance-icon.info {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        .guidance-card h3 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .guidance-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .guidance-card li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.5;
+        }
+        
+        .guidance-card li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -897,6 +1379,36 @@
                         <button id="resetBtn" class="btn btn-outline">
                             <i class="fas fa-redo"></i> Reset
                         </button>
+                        <div class="dropdown">
+                            <button class="btn btn-outline dropdown-toggle">
+                                <i class="fas fa-download"></i> Export
+                            </button>
+                            <div class="dropdown-menu">
+                                <a href="#" id="exportJson" class="dropdown-item">
+                                    <i class="fas fa-file-code"></i> JSON
+                                </a>
+                                <a href="#" id="exportCsv" class="dropdown-item">
+                                    <i class="fas fa-file-csv"></i> CSV
+                                </a>
+                                <a href="#" id="shareLink" class="dropdown-item">
+                                    <i class="fas fa-share"></i> Share Link
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Safety Warnings Card -->
+                <div class="card">
+                    <h3 class="card-title"><i class="fas fa-shield-alt"></i> Safety Compliance Check</h3>
+                    <div id="safetyWarnings">
+                        <div class="safety-status loading">
+                            <div class="spinner small"></div>
+                            <div>
+                                <strong>Checking safety requirements...</strong>
+                                <small>Validating against NFPA standards</small>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -961,7 +1473,7 @@
                     
                     <div class="form-group">
                         <label for="pressureRating">System Pressure (PSI)</label>
-                        <div class="input-with-unit">
+                            <div class="input-with-unit">
                             <input type="number" id="pressureRating" min="50" max="300" step="10" value="100">
                             <span class="unit">PSI</span>
                         </div>
@@ -974,6 +1486,53 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Emergency Procedures Section -->
+        <section class="emergency-guidance">
+            <div class="container">
+                <h2><i class="fas fa-exclamation-triangle"></i> Emergency Response Guidelines</h2>
+                <div class="guidance-grid">
+                    <div class="guidance-card">
+                        <div class="guidance-icon emergency">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <h3>Kitchen Fire Emergency</h3>
+                        <ul>
+                            <li>Activate manual release station immediately</li>
+                            <li>Evacuate all personnel from the area</li>
+                            <li>Call emergency services (911/112)</li>
+                            <li>Do not re-enter until cleared by fire department</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="guidance-card">
+                        <div class="guidance-icon warning">
+                            <i class="fas fa-exclamation"></i>
+                        </div>
+                        <h3>System Maintenance</h3>
+                        <ul>
+                            <li>Monthly visual inspection of all components</li>
+                            <li>Annual professional inspection required</li>
+                            <li>Test manual release station quarterly</li>
+                            <li>Keep area around cylinders clear (1m radius)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="guidance-card">
+                        <div class="guidance-icon info">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3>Staff Training</h3>
+                        <ul>
+                            <li>Train all kitchen staff on system operation</li>
+                            <li>Conduct fire drills every 6 months</li>
+                            <li>Post emergency procedures in kitchen</li>
+                            <li>Maintain training records</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
         
         <!-- Explore Tools Section -->
         <section class="explore-tools">
@@ -1062,7 +1621,5 @@
             </div>
         </footer>
     </div>
-    
-    <!-- Initialize calculator - MOVED TO HEAD SECTION -->
 </body>
 </html>
