@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quotation | Kitchen Fire Suppression System</title>
+    <title>Professional Quotation | Kitchen Fire Suppression System</title>
     
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-376208036"></script>
@@ -27,164 +27,216 @@
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
     
     <style>
-        /* Quotation page specific styles */
+        /* Enhanced Quotation Styles */
         .quotation-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .quotation-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .quotation-header .header-content {
             display: flex;
-            flex-direction: column;
-            gap: 25px;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
         }
         
-        .quotation-header-card {
-            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+        .quotation-title-main {
             color: white;
+            font-size: 2.2rem;
+            margin: 0;
         }
         
-        .quotation-header-card .card-title {
-            color: white;
-            border-bottom-color: rgba(255, 255, 255, 0.2);
+        .quote-number-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 600;
         }
         
-        .quotation-header-content {
+        .company-details-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+            border-left: 5px solid var(--primary);
+        }
+        
+        .company-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 25px;
-            flex-wrap: wrap;
-            gap: 20px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
         }
         
-        .quotation-title h1 {
-            color: white;
-            font-size: 2.5rem;
+        .company-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .company-logo i {
+            font-size: 3rem;
+            color: var(--primary);
+        }
+        
+        .company-info h2 {
+            color: var(--primary);
             margin-bottom: 5px;
         }
         
-        .quote-number {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            color: rgba(255, 255, 255, 0.9);
-        }
-        
-        .quotation-company {
+        .quotation-meta {
             text-align: right;
         }
         
-        .quotation-company h3 {
-            color: white;
-            margin-bottom: 8px;
-        }
-        
-        .quotation-company p {
-            margin-bottom: 4px;
-            font-size: 0.95rem;
-            opacity: 0.9;
-        }
-        
-        .quotation-details {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: var(--radius-sm);
-        }
-        
-        @media (max-width: 768px) {
-            .quotation-details {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .detail-section h4 {
-            color: white;
-            margin-bottom: 10px;
+        .quotation-meta .date {
             font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
         }
         
-        .detail-section p {
+        .valid-until {
+            color: var(--success);
+            font-weight: 600;
+            background: rgba(46, 125, 50, 0.1);
+            padding: 5px 10px;
+            border-radius: var(--radius-sm);
+            display: inline-block;
+            margin-top: 5px;
+        }
+        
+        .client-info-card {
+            background: var(--gray-light);
+            padding: 25px;
+            border-radius: var(--radius);
+            margin-bottom: 25px;
+        }
+        
+        .client-info-card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .client-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .client-detail-item {
+            background: white;
+            padding: 15px;
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--primary);
+        }
+        
+        .client-detail-item strong {
+            color: var(--secondary);
+            display: block;
             margin-bottom: 5px;
         }
         
-        .scope-list {
-            padding-left: 20px;
-            margin-top: 15px;
-        }
-        
-        .scope-list li {
-            margin-bottom: 8px;
-            line-height: 1.5;
+        /* Enhanced Quotation Table */
+        .quotation-table-container {
+            overflow-x: auto;
+            margin: 30px 0;
         }
         
         .quotation-table {
-            margin-top: 20px;
-            border: 1px solid #eee;
-            border-radius: var(--radius-sm);
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: var(--shadow-sm);
+            border-radius: var(--radius);
             overflow: hidden;
         }
         
-        .table-header {
-            display: grid;
-            grid-template-columns: 3fr 0.5fr 1fr 1fr;
-            background-color: var(--primary);
+        .quotation-table thead {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            font-weight: 600;
-            padding: 15px;
-            text-align: center;
         }
         
-        .table-row {
-            display: grid;
-            grid-template-columns: 3fr 0.5fr 1fr 1fr;
-            padding: 12px 15px;
-            border-bottom: 1px solid #eee;
-            align-items: center;
-        }
-        
-        .table-row:nth-child(even) {
-            background-color: rgba(0, 0, 0, 0.02);
-        }
-        
-        .col-item {
+        .quotation-table th {
+            padding: 18px 15px;
             text-align: left;
-        }
-        
-        .col-qty, .col-unit, .col-total {
-            text-align: center;
-        }
-        
-        .category-header {
-            background-color: var(--gray-light);
             font-weight: 600;
-            color: var(--secondary);
+            border: none;
+        }
+        
+        .quotation-table tbody tr {
+            border-bottom: 1px solid #eee;
+        }
+        
+        .quotation-table tbody tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .quotation-table tbody tr:hover {
+            background: rgba(198, 40, 40, 0.03);
+        }
+        
+        .quotation-table td {
+            padding: 15px;
+            vertical-align: top;
         }
         
         .total-row {
-            background-color: #f8f9fa;
+            background: var(--gray-light) !important;
+            font-weight: 600;
             font-size: 1.1rem;
-            border-top: 2px solid #dee2e6;
         }
         
-        .grand-total {
-            background-color: var(--primary);
+        .grand-total-row {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark)) !important;
             color: white;
             font-size: 1.2rem;
-            border-bottom: none !important;
+            font-weight: 700;
         }
         
-        .terms-content {
-            line-height: 1.6;
+        .grand-total-row td {
+            padding: 20px 15px;
         }
         
-        .terms-content ol {
-            padding-left: 25px;
+        .terms-section {
+            background: white;
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-top: 30px;
+        }
+        
+        .terms-section h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .terms-list {
+            padding-left: 20px;
             margin-bottom: 30px;
         }
         
-        .terms-content li {
+        .terms-list li {
             margin-bottom: 10px;
+            line-height: 1.6;
         }
         
-        .signature-section {
+        .signature-area {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 40px;
@@ -194,20 +246,20 @@
         }
         
         @media (max-width: 768px) {
-            .signature-section {
+            .signature-area {
                 grid-template-columns: 1fr;
                 gap: 30px;
             }
         }
         
-        .signature-block, .acceptance-block {
+        .signature-box {
             text-align: center;
         }
         
         .signature-line {
             height: 1px;
-            background-color: #333;
-            margin: 30px 0;
+            background: #333;
+            margin: 40px 0 20px;
             position: relative;
         }
         
@@ -221,27 +273,80 @@
             border-bottom: 1px solid #333;
         }
         
-        .print-actions {
-            margin-left: auto;
+        .print-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+        
+        .print-controls .btn {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        @media print {
+            .print-controls {
+                display: none;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            body {
+                font-size: 12pt;
+            }
+            
+            .quotation-table {
+                page-break-inside: avoid;
+            }
+            
+            .signature-area {
+                page-break-inside: avoid;
+            }
+        }
+        
+        /* Warning/Notice Box */
+        .calculation-notice {
+            background: #fff8e1;
+            border-left: 4px solid #f9a825;
+            padding: 20px;
+            border-radius: var(--radius-sm);
+            margin: 20px 0;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+        
+        .calculation-notice i {
+            color: #f9a825;
+            font-size: 1.5rem;
+            margin-top: 2px;
+        }
+        
+        .calculation-notice strong {
+            color: #d32f2f;
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
+    <!-- Enhanced Header -->
     <header class="quotation-header">
         <div class="container">
             <div class="header-content">
-                <div class="logo">
-                    <i class="fas fa-fire-extinguisher"></i>
-                    <div>
-                        <h1>Professional Quotation</h1>
-                        <span>Kitchen Fire Suppression System</span>
-                    </div>
+                <div>
+                    <h1 class="quotation-title-main">QUOTATION</h1>
+                    <div class="quote-number-badge" id="quoteNumberDisplay">Loading...</div>
                 </div>
-                <div class="print-actions">
-                    <button onclick="window.print()" class="btn btn-outline">
+                <div class="print-controls no-print">
+                    <button onclick="window.print()" class="btn btn-primary">
                         <i class="fas fa-print"></i> Print Quotation
                     </button>
+                    <a href="index.html" class="btn btn-outline" style="background: white;">
+                        <i class="fas fa-calculator"></i> New Calculation
+                    </a>
                 </div>
             </div>
         </div>
@@ -260,35 +365,114 @@
     
     <!-- Main Content -->
     <div class="container">
-        <div class="page-header">
-            <div class="back-home">
-                <a href="index.html" class="btn btn-outline">
-                    <i class="fas fa-arrow-left"></i> Back to Calculator
-                </a>
-            </div>
-            <h2><i class="fas fa-file-invoice-dollar"></i> Client Quotation</h2>
-            <p>Professional quotation for kitchen fire suppression system installation</p>
-        </div>
-        
-        <div id="quotationContent">
-            <!-- Quotation will be loaded by JavaScript -->
-            <div class="card" id="loadingQuotation">
-                <div class="loading-state">
-                    <div class="spinner"></div>
-                    <p>Loading quotation data...</p>
+        <div class="quotation-container">
+            <!-- Company & Client Info -->
+            <div class="company-details-card">
+                <div class="company-header">
+                    <div class="company-logo">
+                        <i class="fas fa-fire-extinguisher"></i>
+                        <div class="company-info">
+                            <h2>Fire Safety Solutions Ltd.</h2>
+                            <p>Professional Kitchen Fire Suppression Systems</p>
+                            <p><i class="fas fa-map-marker-alt"></i> 123 Safety Street, Fire City, FC 12345</p>
+                            <p><i class="fas fa-phone"></i> (555) 123-4567 | <i class="fas fa-envelope"></i> info@firesafetysolutions.com</p>
+                        </div>
+                    </div>
+                    <div class="quotation-meta" id="quotationMeta">
+                        <!-- Filled by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="client-info-card">
+                    <h3><i class="fas fa-user-tie"></i> Quotation For</h3>
+                    <div class="client-details" id="clientDetails">
+                        <!-- Filled by JavaScript -->
+                    </div>
                 </div>
             </div>
             
-            <div class="no-quotation" id="noQuotation" style="display: none;">
-                <i class="fas fa-file-invoice-dollar"></i>
-                <h3>No Quotation Data Available</h3>
-                <p>Please perform a calculation first to generate a quotation.</p>
-                <div class="action-buttons">
-                    <a href="index.html" class="btn btn-primary">
-                        <i class="fas fa-calculator"></i> Go to Calculator
-                    </a>
+            <!-- Calculation Notice -->
+            <div class="calculation-notice">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div>
+                    <strong>Important:</strong> This quotation is generated based on the calculation inputs provided. 
+                    Final pricing may vary based on site conditions, local regulations, and specific project requirements. 
+                    All prices are subject to change without notice.
+                </div>
+            </div>
+            
+            <!-- Quotation Items Table -->
+            <div class="card">
+                <h3 class="card-title"><i class="fas fa-receipt"></i> Quotation Items</h3>
+                
+                <div class="quotation-table-container">
+                    <table class="quotation-table" id="quotationTable">
+                        <thead>
+                            <tr>
+                                <th width="50%">Description</th>
+                                <th width="10%">Qty</th>
+                                <th width="20%">Unit Price</th>
+                                <th width="20%">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="quotationItems">
+                            <!-- Filled by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Summary Section -->
+                <div id="quotationSummary" style="margin-top: 30px;">
+                    <!-- Filled by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Terms & Conditions -->
+            <div class="terms-section">
+                <h3><i class="fas fa-file-contract"></i> Terms & Conditions</h3>
+                
+                <ul class="terms-list">
+                    <li>This quotation is valid for <strong>30 days</strong> from the date of issue.</li>
+                    <li>Prices are in the currency specified and include all standard components as listed.</li>
+                    <li>Installation timeline: <strong>2-3 weeks</strong> from receipt of purchase order and 50% deposit.</li>
+                    <li>Payment terms: <strong>50% advance payment</strong>, balance upon completion and commissioning.</li>
+                    <li><strong>Warranty:</strong> 12 months on all parts and labor from date of commissioning.</li>
+                    <li>Annual maintenance contract is recommended and available separately.</li>
+                    <li>All work complies with <strong>NFPA 96</strong> and <strong>NFPA 17A</strong> standards.</li>
+                    <li>Site-specific conditions may require adjustments to the system design and pricing.</li>
+                    <li>Any changes to the scope of work after quotation acceptance may affect final price and timeline.</li>
+                    <li>Installation includes basic operator training on system use and emergency procedures.</li>
+                </ul>
+                
+                <div class="signature-area">
+                    <div class="signature-box">
+                        <h4>For Fire Safety Solutions Ltd.</h4>
+                        <p>Authorized Representative</p>
+                        <div class="signature-line"></div>
+                        <p>Name: _________________________</p>
+                        <p>Title: Project Manager</p>
+                        <p>Date: _________________________</p>
+                    </div>
+                    
+                    <div class="signature-box">
+                        <h4>Accepted By Client</h4>
+                        <p>Authorized Signature</p>
+                        <div class="signature-line"></div>
+                        <p>Name: _________________________</p>
+                        <p>Title: _________________________</p>
+                        <p>Date: _________________________</p>
+                    </div>
+                </div>
+                
+                <div class="action-buttons" style="margin-top: 40px; text-align: center;">
+                    <button onclick="window.print()" class="btn btn-primary btn-lg">
+                        <i class="fas fa-print"></i> Print Quotation
+                    </button>
                     <a href="results.html" class="btn btn-outline">
-                        <i class="fas fa-list-alt"></i> View Results
+                        <i class="fas fa-arrow-left"></i> Back to Results
+                    </a>
+                    <a href="index.html" class="btn btn-secondary">
+                        <i class="fas fa-calculator"></i> New Calculation
                     </a>
                 </div>
             </div>
@@ -296,198 +480,290 @@
         
         <!-- Explore Tools Section -->
         <section class="explore-tools">
-            <h2><i class="fas fa-star"></i> Explore More Calculators & Tools</h2>
-            <p class="section-subtitle">We highly recommend these expert resources for specialized safety and utility tools:</p>
+            <h2><i class="fas fa-star"></i> Recommended Safety Tools</h2>
             <div class="tools-grid">
                 <div class="tool-card">
+                    <div class="tool-icon">🧯</div>
+                    <h3>Fire Extinguisher Calculator</h3>
+                    <p>BIS 2190:2024 compliant calculator for determining exact fire extinguisher requirements.</p>
+                    <a href="https://fire-extinguisher-calculator.vercel.app" target="_blank" class="tool-link">Try Tool</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">📋</div>
+                    <h3>Fire Safety Audit Tool</h3>
+                    <p>Streamline fire safety inspections with automated audit reporting.</p>
+                    <a href="https://fire-extinguisher-audit-tool.vercel.app" target="_blank" class="tool-link">Try Tool</a>
+                </div>
+                <div class="tool-card">
                     <div class="tool-icon">🔥</div>
-                    <h3>Fire Safety Tool</h3>
-                    <p>Comprehensive suite of NFPA & IBC compliant calculators for clean agent, CO₂, foam systems, and egress planning.</p>
-                    <a href="https://www.firesafetytool.com" target="_blank" class="tool-link">Visit Site <i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">🛡️</div>
-                    <h3>HSE Calculator</h3>
-                    <p>Health, Safety & Environment tools for risk assessment, noise exposure, incident rates, and compliance management.</p>
-                    <a href="https://www.hsecalculator.com" target="_blank" class="tool-link">Visit Site <i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">⚙️</div>
-                    <h3>Web Tools Daily</h3>
-                    <p>Collection of free, privacy-focused utilities like image converters and formatters that work directly in your browser.</p>
-                    <a href="https://www.webtoolsdaily.com" target="_blank" class="tool-link">Visit Site <i class="fas fa-external-link-alt"></i></a>
+                    <h3>Fire Safety Assessment</h3>
+                    <p>Complete fire safety risk assessment platform.</p>
+                    <a href="https://firesafetyassessmenttool.vercel.app" target="_blank" class="tool-link">Try Tool</a>
                 </div>
             </div>
         </section>
-        
-        <!-- Amazon Associates Banner -->
-        <aside class="affiliate-banner">
-            <a href="https://amzn.to/4p8ceG6" target="_blank" class="amazon-button">
-                <span class="sale-badge">Clearance Sale! Up to 70% Off</span>
-                <span class="banner-text">🔥 Shop Fire Safety Equipment on Amazon</span>
-                <i class="fas fa-bolt"></i>
-            </a>
-        </aside>
         
         <!-- Footer -->
         <footer>
             <div class="footer-content">
                 <div class="footer-logo">
                     <i class="fas fa-fire-extinguisher"></i>
-                    <span>KFSS Calculator</span>
-                </div>
-                <div class="footer-links">
-                    <a href="index.html">Calculator</a>
-                    <a href="results.html">Results</a>
-                    <a href="quotation.html">Quotation</a>
-                    <a href="#" onclick="window.print()">Print</a>
+                    <span>Professional KFSS Calculator</span>
                 </div>
                 <div class="footer-disclaimer">
-                    <p>© 2023 Fire Safety Solutions. Professional fire suppression system calculator.</p>
+                    <p>© 2023 Fire Safety Solutions Ltd. | NFPA 96 & NFPA 17A Compliant | Professional Kitchen Fire Suppression Systems</p>
                 </div>
             </div>
         </footer>
     </div>
     
-    <!-- Load quotation from localStorage -->
+    <!-- Quotation JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            loadQuotationSimple();
+            generateQuotation();
         });
         
-        function loadQuotationSimple() {
-            const container = document.getElementById('quotationContent');
-            const loading = document.getElementById('loadingQuotation');
-            const noQuotation = document.getElementById('noQuotation');
-            
-            // Try to load calculation from localStorage
+        function generateQuotation() {
             try {
+                // Get calculation from localStorage
                 const saved = localStorage.getItem('kfss_last_calculation');
                 if (!saved) {
-                    loading.style.display = 'none';
-                    noQuotation.style.display = 'block';
+                    showNoData();
                     return;
                 }
                 
                 const calculation = JSON.parse(saved);
-                loading.style.display = 'none';
-                
-                // Simple display of quotation
-                const symbol = {'USD': '$', 'EUR': '€', 'INR': '₹', 'AED': 'د.إ'}[calculation.project.currency] || '$';
-                const exchangeRate = calculation.results.exchangeRate || 1;
-                
-                const formatCost = (amount) => {
-                    return symbol + (amount * exchangeRate).toFixed(2);
-                };
+                const currency = calculation.project.currency;
+                const symbol = {
+                    'USD': '$',
+                    'EUR': '€',
+                    'INR': '₹',
+                    'AED': 'د.إ'
+                }[currency] || '$';
                 
                 // Generate quote number
-                const quoteNumber = 'Q-' + new Date(calculation.timestamp).getFullYear() + '-' + 
-                                   String(new Date(calculation.timestamp).getMonth() + 1).padStart(2, '0') + '-' + 
-                                   String(calculation.id).slice(-6);
+                const quoteNumber = 'Q-' + 
+                    new Date(calculation.timestamp).getFullYear() + '-' +
+                    String(new Date(calculation.timestamp).getMonth() + 1).padStart(2, '0') + '-' +
+                    String(calculation.id).slice(-6);
                 
-                // Validity date
-                const validityDate = new Date();
-                validityDate.setDate(validityDate.getDate() + 30);
-                const formattedValidityDate = validityDate.toLocaleDateString();
+                // Update quote number display
+                document.getElementById('quoteNumberDisplay').textContent = 'Quote #: ' + quoteNumber;
                 
-                container.innerHTML = `
-                    <div class="quotation-container">
-                        <div class="card quotation-header-card">
-                            <div class="quotation-header-content">
-                                <div class="quotation-title">
-                                    <h1>QUOTATION</h1>
-                                    <p class="quote-number">Quote No: ${quoteNumber}</p>
-                                </div>
-                                <div class="quotation-company">
-                                    <h3>Fire Safety Solutions</h3>
-                                    <p>Professional Kitchen Fire Suppression</p>
-                                </div>
-                            </div>
-                            <div class="quotation-details">
-                                <div class="detail-section">
-                                    <h4>Quotation For:</h4>
-                                    <p><strong>${calculation.project.client}</strong></p>
-                                    <p>Project: ${calculation.project.name}</p>
-                                </div>
-                                <div class="detail-section">
-                                    <h4>Quotation Details:</h4>
-                                    <p>Date: ${new Date(calculation.timestamp).toLocaleDateString()}</p>
-                                    <p>Valid Until: ${formattedValidityDate}</p>
-                                    <p>Currency: ${calculation.project.currency}</p>
-                                </div>
+                // Update quotation meta
+                const quoteDate = new Date(calculation.timestamp);
+                const validDate = new Date(quoteDate);
+                validDate.setDate(validDate.getDate() + 30);
+                
+                document.getElementById('quotationMeta').innerHTML = `
+                    <div class="date">${quoteDate.toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    })}</div>
+                    <div class="valid-until">
+                        <i class="fas fa-calendar-check"></i>
+                        Valid until: ${validDate.toLocaleDateString()}
+                    </div>
+                    <div style="margin-top: 10px; font-size: 0.9rem;">
+                        <i class="fas fa-money-bill-wave"></i> Currency: ${currency}
+                    </div>
+                `;
+                
+                // Update client details
+                document.getElementById('clientDetails').innerHTML = `
+                    <div class="client-detail-item">
+                        <strong>Client Name</strong>
+                        ${calculation.project.client}
+                    </div>
+                    <div class="client-detail-item">
+                        <strong>Project Name</strong>
+                        ${calculation.project.name}
+                    </div>
+                    <div class="client-detail-item">
+                        <strong>Project Location</strong>
+                        ${calculation.project.location || 'To be specified'}
+                    </div>
+                    <div class="client-detail-item">
+                        <strong>Calculation Reference</strong>
+                        CALC-${calculation.id}
+                    </div>
+                `;
+                
+                // Generate quotation items
+                const subtotals = calculation.results.subtotals;
+                const totalCost = calculation.results.totalCost;
+                
+                let tableHTML = '';
+                let rowNumber = 1;
+                
+                // System Components
+                tableHTML += `
+                    <tr class="category-header">
+                        <td colspan="4" style="background: #f5f5f5; font-weight: 600; color: var(--primary);">
+                            <i class="fas fa-fire-extinguisher"></i> Kitchen Fire Suppression System Components
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Wet Chemical Cylinder System (${calculation.results.cylinders > 1 ? '10kg' : '5kg} cylinders)</td>
+                        <td>${calculation.results.cylinders}</td>
+                        <td>${symbol}${(calculation.results.cylinders > 1 ? 1900 : 1200).toFixed(2)}</td>
+                        <td>${symbol}${subtotals.cylinders.toFixed(2)}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Discharge Nozzles (various types for plenum, duct & appliances)</td>
+                        <td>${calculation.results.nozzles.total}</td>
+                        <td>${symbol}85.00</td>
+                        <td>${symbol}${subtotals.nozzles.toFixed(2)}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Piping System (${calculation.configuration.hood.material || 'Galvanized'} steel)</td>
+                        <td>${Math.round(calculation.results.pipingLength)} m</td>
+                        <td>${symbol}35.00/m</td>
+                        <td>${symbol}${subtotals.piping.toFixed(2)}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Hood & Agent Tank Assembly</td>
+                        <td>1</td>
+                        <td>${symbol}1800.00</td>
+                        <td>${symbol}${subtotals.hoodAgentTank.toFixed(2)}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Manual Release Station with Fusible Link Detectors</td>
+                        <td>1</td>
+                        <td>${symbol}250.00</td>
+                        <td>${symbol}${subtotals.manualRelease.toFixed(2)}</td>
+                    </tr>
+                `;
+                
+                // Appliance Protection
+                if (calculation.configuration.appliances && calculation.configuration.appliances.length > 0) {
+                    tableHTML += `
+                        <tr class="category-header">
+                            <td colspan="4" style="background: #f5f5f5; font-weight: 600; color: var(--primary);">
+                                <i class="fas fa-utensils"></i> Appliance Protection
+                            </td>
+                        </tr>
+                    `;
+                    
+                    calculation.configuration.appliances.forEach(appliance => {
+                        tableHTML += `
+                            <tr>
+                                <td>${appliance.name} Protection System</td>
+                                <td>${appliance.nozzles}</td>
+                                <td>${symbol}${(appliance.price / appliance.nozzles).toFixed(2)}</td>
+                                <td>${symbol}${appliance.price.toFixed(2)}</td>
+                            </tr>
+                        `;
+                    });
+                }
+                
+                // Services
+                tableHTML += `
+                    <tr class="category-header">
+                        <td colspan="4" style="background: #f5f5f5; font-weight: 600; color: var(--primary);">
+                            <i class="fas fa-tools"></i> Services
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Professional Installation & Labor</td>
+                        <td>1</td>
+                        <td>${symbol}850.00</td>
+                        <td>${symbol}${subtotals.installationLabor.toFixed(2)}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>System Commissioning, Testing & Certification</td>
+                        <td>1</td>
+                        <td>${symbol}400.00</td>
+                        <td>${symbol}${subtotals.commissioning.toFixed(2)}</td>
+                    </tr>
+                    
+                    <tr class="total-row">
+                        <td colspan="3" style="text-align: right;"><strong>SUBTOTAL</strong></td>
+                        <td><strong>${symbol}${(totalCost / 1.1).toFixed(2)}</strong></td>
+                    </tr>
+                    
+                    <tr>
+                        <td colspan="3" style="text-align: right;">Safety Margin (${calculation.configuration.system.safetyFactor || 10}%)</td>
+                        <td>${symbol}${(totalCost * 0.1).toFixed(2)}</td>
+                    </tr>
+                    
+                    <tr class="grand-total-row">
+                        <td colspan="3" style="text-align: right;"><strong>TOTAL QUOTATION AMOUNT</strong></td>
+                        <td><strong>${symbol}${totalCost.toFixed(2)}</strong></td>
+                    </tr>
+                `;
+                
+                document.getElementById('quotationItems').innerHTML = tableHTML;
+                
+                // Update summary
+                document.getElementById('quotationSummary').innerHTML = `
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 30px;">
+                        <div class="summary-box" style="background: #e8f5e9; padding: 20px; border-radius: var(--radius); border-left: 4px solid #2e7d32;">
+                            <div style="font-size: 0.9rem; color: #2e7d32; margin-bottom: 5px;">System Coverage</div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #1b5e20;">${calculation.results.nozzles.total} Nozzles</div>
+                            <div style="font-size: 0.85rem; color: #666; margin-top: 5px;">
+                                Plenum: ${calculation.results.nozzles.plenum} | 
+                                Duct: ${calculation.results.nozzles.duct} | 
+                                Appliances: ${calculation.results.nozzles.appliances}
                             </div>
                         </div>
                         
-                        <div class="card">
-                            <h3 class="card-title"><i class="fas fa-clipboard-list"></i> System Summary</h3>
-                            <ul class="scope-list">
-                                <li>Wet chemical suppression system with ${calculation.results.cylinders} cylinder${calculation.results.cylinders > 1 ? 's' : ''}</li>
-                                <li>${calculation.results.nozzles.total} discharge nozzles</li>
-                                <li>Approximately ${Math.round(calculation.results.pipingLength)} meters of piping</li>
-                                <li>Professional installation and commissioning</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="card">
-                            <h3 class="card-title"><i class="fas fa-receipt"></i> Quotation Summary</h3>
-                            <div class="quotation-table">
-                                <div class="table-header">
-                                    <div class="col-item">Description</div>
-                                    <div class="col-total">Amount</div>
-                                </div>
-                                ${Object.entries(calculation.results.subtotals).map(([key, value]) => `
-                                    <div class="table-row">
-                                        <div class="col-item">${key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</div>
-                                        <div class="col-total">${formatCost(value)}</div>
-                                    </div>
-                                `).join('')}
-                                <div class="table-row grand-total">
-                                    <div class="col-item"><strong>TOTAL QUOTATION AMOUNT</strong></div>
-                                    <div class="col-total"><strong>${formatCost(calculation.results.totalCost)}</strong></div>
-                                </div>
+                        <div class="summary-box" style="background: #e3f2fd; padding: 20px; border-radius: var(--radius); border-left: 4px solid #1565c0;">
+                            <div style="font-size: 0.9rem; color: #1565c0; margin-bottom: 5px;">Chemical Agent</div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #0d47a1;">${calculation.results.agentWeight.toFixed(1)} kg</div>
+                            <div style="font-size: 0.85rem; color: #666; margin-top: 5px;">
+                                ${calculation.results.cylinders} cylinder${calculation.results.cylinders > 1 ? 's' : ''} required
                             </div>
                         </div>
                         
-                        <div class="card">
-                            <h3 class="card-title"><i class="fas fa-file-contract"></i> Terms & Conditions</h3>
-                            <div class="terms-content">
-                                <ol>
-                                    <li>This quotation is valid for 30 days</li>
-                                    <li>Prices are in ${calculation.project.currency}</li>
-                                    <li>Payment terms: 50% advance, 50% upon completion</li>
-                                    <li>Warranty: 12 months on all parts and labor</li>
-                                    <li>All work complies with NFPA 96 and NFPA 17A standards</li>
-                                </ol>
-                                <div class="signature-section">
-                                    <div class="signature-block">
-                                        <p>For Fire Safety Solutions</p>
-                                        <div class="signature-line"></div>
-                                        <p>Authorized Signature</p>
-                                    </div>
-                                    <div class="acceptance-block">
-                                        <p>Accepted By:</p>
-                                        <div class="signature-line"></div>
-                                        <p>Client Signature</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="action-buttons" style="margin-top: 30px;">
-                                <button onclick="window.print()" class="btn btn-primary btn-lg">
-                                    <i class="fas fa-print"></i> Print Quotation
-                                </button>
-                                <a href="results.html" class="btn btn-outline">
-                                    <i class="fas fa-arrow-left"></i> Back to Results
-                                </a>
+                        <div class="summary-box" style="background: #f3e5f5; padding: 20px; border-radius: var(--radius); border-left: 4px solid #7b1fa2;">
+                            <div style="font-size: 0.9rem; color: #7b1fa2; margin-bottom: 5px;">Piping System</div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #4a148c;">${Math.round(calculation.results.pipingLength)} m</div>
+                            <div style="font-size: 0.85rem; color: #666; margin-top: 5px;">
+                                ${calculation.configuration.system.pipeMaterial || 'Galvanized'} steel piping
                             </div>
                         </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 25px; padding: 20px; background: linear-gradient(135deg, #ff9800, #f57c00); color: white; border-radius: var(--radius);">
+                        <div style="font-size: 0.9rem; margin-bottom: 5px;">TOTAL QUOTATION VALUE</div>
+                        <div style="font-size: 2.5rem; font-weight: 800; margin-bottom: 5px;">${symbol}${totalCost.toFixed(2)}</div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;">In ${currency} • Valid for 30 days</div>
                     </div>
                 `;
                 
             } catch (error) {
-                console.error('Error loading quotation:', error);
-                loading.style.display = 'none';
-                noQuotation.style.display = 'block';
+                console.error('Error generating quotation:', error);
+                showNoData();
             }
+        }
+        
+        function showNoData() {
+            document.querySelector('.quotation-container').innerHTML = `
+                <div class="card" style="text-align: center; padding: 60px 20px;">
+                    <i class="fas fa-file-invoice-dollar" style="font-size: 4rem; color: var(--gray); margin-bottom: 20px;"></i>
+                    <h2>No Quotation Data Available</h2>
+                    <p style="margin-bottom: 30px; color: var(--gray-dark); max-width: 500px; margin-left: auto; margin-right: auto;">
+                        Please perform a calculation first to generate a professional quotation.
+                    </p>
+                    <div class="action-buttons" style="display: flex; gap: 15px; justify-content: center;">
+                        <a href="index.html" class="btn btn-primary btn-lg">
+                            <i class="fas fa-calculator"></i> Go to Calculator
+                        </a>
+                        <a href="results.html" class="btn btn-outline">
+                            <i class="fas fa-list-alt"></i> View Results
+                        </a>
+                    </div>
+                </div>
+            `;
         }
     </script>
 </body>
