@@ -353,12 +353,13 @@
         </footer>
     </div>
     
-    <!-- Scripts -->
+        <!-- Scripts -->
     <script src="script.js"></script>
     <script>
         // Load and display quotation when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            if (typeof KFSSCalculator !== 'undefined') {
+            console.log('Quotation page loaded');
+            if (typeof KFSSCalculator !== 'undefined' && KFSSCalculator.displayQuotation) {
                 // Wait a moment for DOM to be fully ready
                 setTimeout(function() {
                     KFSSCalculator.displayQuotation();
