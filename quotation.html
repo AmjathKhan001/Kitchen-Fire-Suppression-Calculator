@@ -193,6 +193,12 @@
             vertical-align: top;
         }
         
+        .category-row {
+            background: #f5f5f5 !important;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
         .total-row {
             background: var(--gray-light) !important;
             font-weight: 600;
@@ -329,6 +335,69 @@
         .calculation-notice strong {
             color: #d32f2f;
         }
+        
+        /* System Summary Cards */
+        .system-summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .summary-card-item {
+            background: white;
+            padding: 20px;
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            border-top: 4px solid var(--primary);
+        }
+        
+        .summary-card-item .label {
+            font-size: 0.9rem;
+            color: var(--gray-dark);
+            margin-bottom: 5px;
+        }
+        
+        .summary-card-item .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .summary-card-item .detail {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+        
+        /* Total Display */
+        .total-display {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            color: white;
+            padding: 25px;
+            border-radius: var(--radius);
+            text-align: center;
+            margin: 30px 0;
+            box-shadow: var(--shadow);
+        }
+        
+        .total-display .label {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            opacity: 0.9;
+        }
+        
+        .total-display .amount {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+        
+        .total-display .note {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body>
@@ -376,6 +445,7 @@
                             <p>Professional Kitchen Fire Suppression Systems</p>
                             <p><i class="fas fa-map-marker-alt"></i> 123 Safety Street, Fire City, FC 12345</p>
                             <p><i class="fas fa-phone"></i> (555) 123-4567 | <i class="fas fa-envelope"></i> info@firesafetysolutions.com</p>
+                            <p><i class="fas fa-globe"></i> www.firesafetysolutions.com</p>
                         </div>
                     </div>
                     <div class="quotation-meta" id="quotationMeta">
@@ -401,6 +471,14 @@
                 </div>
             </div>
             
+            <!-- System Summary -->
+            <div class="card">
+                <h3 class="card-title"><i class="fas fa-fire-extinguisher"></i> System Summary</h3>
+                <div class="system-summary-cards" id="systemSummary">
+                    <!-- Filled by JavaScript -->
+                </div>
+            </div>
+            
             <!-- Quotation Items Table -->
             <div class="card">
                 <h3 class="card-title"><i class="fas fa-receipt"></i> Quotation Items</h3>
@@ -421,8 +499,8 @@
                     </table>
                 </div>
                 
-                <!-- Summary Section -->
-                <div id="quotationSummary" style="margin-top: 30px;">
+                <!-- Total Display -->
+                <div class="total-display" id="totalDisplay">
                     <!-- Filled by JavaScript -->
                 </div>
             </div>
@@ -502,6 +580,15 @@
                 </div>
             </div>
         </section>
+        
+        <!-- Amazon Associates Banner -->
+        <aside class="affiliate-banner">
+            <a href="https://amzn.to/4p8ceG6" target="_blank" class="amazon-button">
+                <span class="sale-badge">Clearance Sale! Up to 70% Off</span>
+                <span class="banner-text">🔥 Shop Fire Safety Equipment on Amazon</span>
+                <i class="fas fa-bolt"></i>
+            </a>
+        </aside>
         
         <!-- Footer -->
         <footer>
@@ -590,19 +677,47 @@
                     </div>
                 `;
                 
+                // Update system summary
+                document.getElementById('systemSummary').innerHTML = `
+                    <div class="summary-card-item">
+                        <div class="label">Total Nozzles</div>
+                        <div class="value">${calculation.results.nozzles.total}</div>
+                        <div class="detail">
+                            Plenum: ${calculation.results.nozzles.plenum}<br>
+                            Duct: ${calculation.results.nozzles.duct}<br>
+                            Appliances: ${calculation.results.nozzles.appliances}
+                        </div>
+                    </div>
+                    <div class="summary-card-item">
+                        <div class="label">Cylinders Required</div>
+                        <div class="value">${calculation.results.cylinders}</div>
+                        <div class="detail">
+                            ${calculation.results.cylinders > 1 ? '10kg cylinders' : '5kg cylinder'}
+                        </div>
+                    </div>
+                    <div class="summary-card-item">
+                        <div class="label">Agent Weight</div>
+                        <div class="value">${calculation.results.agentWeight.toFixed(1)} kg</div>
+                        <div class="detail">Wet Chemical</div>
+                    </div>
+                    <div class="summary-card-item">
+                        <div class="label">Piping Length</div>
+                        <div class="value">${Math.round(calculation.results.pipingLength)} m</div>
+                        <div class="detail">${calculation.configuration.system.pipeMaterial || 'Galvanized'}</div>
+                    </div>
+                `;
+                
                 // Generate quotation items
                 const subtotals = calculation.results.subtotals;
                 const totalCost = calculation.results.totalCost;
+                const safetyFactor = calculation.configuration.system.safetyFactor || 10;
                 
                 let tableHTML = '';
-                let rowNumber = 1;
                 
                 // System Components
                 tableHTML += `
-                    <tr class="category-header">
-                        <td colspan="4" style="background: #f5f5f5; font-weight: 600; color: var(--primary);">
-                            <i class="fas fa-fire-extinguisher"></i> Kitchen Fire Suppression System Components
-                        </td>
+                    <tr class="category-row">
+                        <td colspan="4"><i class="fas fa-fire-extinguisher"></i> Kitchen Fire Suppression System Components</td>
                     </tr>
                     
                     <tr>
@@ -644,10 +759,8 @@
                 // Appliance Protection
                 if (calculation.configuration.appliances && calculation.configuration.appliances.length > 0) {
                     tableHTML += `
-                        <tr class="category-header">
-                            <td colspan="4" style="background: #f5f5f5; font-weight: 600; color: var(--primary);">
-                                <i class="fas fa-utensils"></i> Appliance Protection
-                            </td>
+                        <tr class="category-row">
+                            <td colspan="4"><i class="fas fa-utensils"></i> Appliance Protection</td>
                         </tr>
                     `;
                     
@@ -665,10 +778,8 @@
                 
                 // Services
                 tableHTML += `
-                    <tr class="category-header">
-                        <td colspan="4" style="background: #f5f5f5; font-weight: 600; color: var(--primary);">
-                            <i class="fas fa-tools"></i> Services
-                        </td>
+                    <tr class="category-row">
+                        <td colspan="4"><i class="fas fa-tools"></i> Services</td>
                     </tr>
                     
                     <tr>
@@ -687,12 +798,12 @@
                     
                     <tr class="total-row">
                         <td colspan="3" style="text-align: right;"><strong>SUBTOTAL</strong></td>
-                        <td><strong>${symbol}${(totalCost / 1.1).toFixed(2)}</strong></td>
+                        <td><strong>${symbol}${(totalCost / (1 + safetyFactor/100)).toFixed(2)}</strong></td>
                     </tr>
                     
                     <tr>
-                        <td colspan="3" style="text-align: right;">Safety Margin (${calculation.configuration.system.safetyFactor || 10}%)</td>
-                        <td>${symbol}${(totalCost * 0.1).toFixed(2)}</td>
+                        <td colspan="3" style="text-align: right;">Safety Margin (${safetyFactor}%)</td>
+                        <td>${symbol}${(totalCost - (totalCost / (1 + safetyFactor/100))).toFixed(2)}</td>
                     </tr>
                     
                     <tr class="grand-total-row">
@@ -703,41 +814,11 @@
                 
                 document.getElementById('quotationItems').innerHTML = tableHTML;
                 
-                // Update summary
-                document.getElementById('quotationSummary').innerHTML = `
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 30px;">
-                        <div class="summary-box" style="background: #e8f5e9; padding: 20px; border-radius: var(--radius); border-left: 4px solid #2e7d32;">
-                            <div style="font-size: 0.9rem; color: #2e7d32; margin-bottom: 5px;">System Coverage</div>
-                            <div style="font-size: 1.5rem; font-weight: 700; color: #1b5e20;">${calculation.results.nozzles.total} Nozzles</div>
-                            <div style="font-size: 0.85rem; color: #666; margin-top: 5px;">
-                                Plenum: ${calculation.results.nozzles.plenum} | 
-                                Duct: ${calculation.results.nozzles.duct} | 
-                                Appliances: ${calculation.results.nozzles.appliances}
-                            </div>
-                        </div>
-                        
-                        <div class="summary-box" style="background: #e3f2fd; padding: 20px; border-radius: var(--radius); border-left: 4px solid #1565c0;">
-                            <div style="font-size: 0.9rem; color: #1565c0; margin-bottom: 5px;">Chemical Agent</div>
-                            <div style="font-size: 1.5rem; font-weight: 700; color: #0d47a1;">${calculation.results.agentWeight.toFixed(1)} kg</div>
-                            <div style="font-size: 0.85rem; color: #666; margin-top: 5px;">
-                                ${calculation.results.cylinders} cylinder${calculation.results.cylinders > 1 ? 's' : ''} required
-                            </div>
-                        </div>
-                        
-                        <div class="summary-box" style="background: #f3e5f5; padding: 20px; border-radius: var(--radius); border-left: 4px solid #7b1fa2;">
-                            <div style="font-size: 0.9rem; color: #7b1fa2; margin-bottom: 5px;">Piping System</div>
-                            <div style="font-size: 1.5rem; font-weight: 700; color: #4a148c;">${Math.round(calculation.results.pipingLength)} m</div>
-                            <div style="font-size: 0.85rem; color: #666; margin-top: 5px;">
-                                ${calculation.configuration.system.pipeMaterial || 'Galvanized'} steel piping
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="text-align: center; margin-top: 25px; padding: 20px; background: linear-gradient(135deg, #ff9800, #f57c00); color: white; border-radius: var(--radius);">
-                        <div style="font-size: 0.9rem; margin-bottom: 5px;">TOTAL QUOTATION VALUE</div>
-                        <div style="font-size: 2.5rem; font-weight: 800; margin-bottom: 5px;">${symbol}${totalCost.toFixed(2)}</div>
-                        <div style="font-size: 0.9rem; opacity: 0.9;">In ${currency} • Valid for 30 days</div>
-                    </div>
+                // Update total display
+                document.getElementById('totalDisplay').innerHTML = `
+                    <div class="label">TOTAL QUOTATION VALUE</div>
+                    <div class="amount">${symbol}${totalCost.toFixed(2)}</div>
+                    <div class="note">In ${currency} • Valid until ${validDate.toLocaleDateString()}</div>
                 `;
                 
             } catch (error) {
