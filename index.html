@@ -413,16 +413,13 @@
         </footer>
     </div>
     
-    <!-- Scripts -->
+        <!-- Scripts -->
     <script src="script.js"></script>
     <script>
         // Initialize the calculator when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            if (typeof KFSSCalculator !== 'undefined') {
-                KFSSCalculator.init();
-            } else {
-                console.error('KFSSCalculator is not defined. Check if script.js is loaded correctly.');
-            }
+            console.log('DOM loaded, initializing calculator...');
+            KFSSCalculator.init();
         });
     </script>
 </body>
