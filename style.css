@@ -1424,3 +1424,431 @@ footer {
     color: var(--success);
     margin-top: 2px;
 }
+/* ============================================
+   RESULTS PAGE ADDITIONAL STYLES
+   ============================================ */
+.project-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.detail-item {
+    background-color: var(--gray-light);
+    padding: 12px 15px;
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--primary);
+}
+
+.configuration-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-top: 15px;
+}
+
+@media (max-width: 768px) {
+    .configuration-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.config-section h4 {
+    color: var(--secondary);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--gray-light);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.config-details p {
+    margin-bottom: 8px;
+    padding-left: 10px;
+    border-left: 2px solid #eee;
+}
+
+.appliance-results {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.appliance-result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: var(--gray-light);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--primary);
+}
+
+.no-data-text {
+    color: var(--gray);
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+}
+
+.boq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.boq-item {
+    background-color: var(--gray-light);
+    padding: 20px;
+    border-radius: var(--radius);
+    text-align: center;
+    border-top: 4px solid var(--primary);
+}
+
+.boq-label {
+    font-weight: 600;
+    color: var(--secondary);
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.boq-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 5px;
+}
+
+.boq-details {
+    font-size: 0.85rem;
+    color: var(--gray-dark);
+}
+
+.cost-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.cost-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.cost-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0;
+    margin-top: 10px;
+    border-top: 2px solid var(--primary);
+    font-size: 1.2rem;
+    color: var(--dark);
+}
+
+/* ============================================
+   QUOTATION PAGE ADDITIONAL STYLES
+   ============================================ */
+.quotation-header-card {
+    background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+    color: white;
+}
+
+.quotation-header-card .card-title {
+    color: white;
+    border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+.quotation-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.quotation-title h1 {
+    color: white;
+    font-size: 2.5rem;
+    margin-bottom: 5px;
+}
+
+.quote-number {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.quotation-company {
+    text-align: right;
+}
+
+.quotation-company h3 {
+    color: white;
+    margin-bottom: 8px;
+}
+
+.quotation-company p {
+    margin-bottom: 4px;
+    font-size: 0.95rem;
+    opacity: 0.9;
+}
+
+.quotation-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: var(--radius-sm);
+}
+
+@media (max-width: 768px) {
+    .quotation-details {
+        grid-template-columns: 1fr;
+    }
+}
+
+.detail-section h4 {
+    color: white;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.detail-section p {
+    margin-bottom: 5px;
+}
+
+.scope-list {
+    padding-left: 20px;
+    margin-top: 15px;
+}
+
+.scope-list li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.quotation-table {
+    margin-top: 20px;
+    border: 1px solid #eee;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.table-header {
+    display: grid;
+    grid-template-columns: 3fr 0.5fr 1fr 1fr;
+    background-color: var(--primary);
+    color: white;
+    font-weight: 600;
+    padding: 15px;
+    text-align: center;
+}
+
+.table-row {
+    display: grid;
+    grid-template-columns: 3fr 0.5fr 1fr 1fr;
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    align-items: center;
+}
+
+.table-row:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.table-row:hover {
+    background-color: rgba(198, 40, 40, 0.05);
+}
+
+.col-item {
+    text-align: left;
+}
+
+.col-qty, .col-unit, .col-total {
+    text-align: center;
+}
+
+.category-header {
+    background-color: var(--gray-light);
+    font-weight: 600;
+    color: var(--secondary);
+}
+
+.total-row {
+    background-color: #f8f9fa;
+    font-size: 1.1rem;
+    border-top: 2px solid #dee2e6;
+}
+
+.grand-total {
+    background-color: var(--primary);
+    color: white;
+    font-size: 1.2rem;
+    border-bottom: none !important;
+}
+
+.terms-content {
+    line-height: 1.6;
+}
+
+.terms-content ol {
+    padding-left: 25px;
+    margin-bottom: 30px;
+}
+
+.terms-content li {
+    margin-bottom: 10px;
+}
+
+.signature-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid #eee;
+}
+
+@media (max-width: 768px) {
+    .signature-section {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+}
+
+.signature-block, .acceptance-block {
+    text-align: center;
+}
+
+.signature-line {
+    height: 1px;
+    background-color: #333;
+    margin: 30px 0;
+    position: relative;
+}
+
+.signature-line:after {
+    content: "";
+    position: absolute;
+    top: -15px;
+    left: 0;
+    right: 0;
+    height: 30px;
+    border-bottom: 1px solid #333;
+}
+
+/* ============================================
+   RECENT CALCULATIONS & HELP STYLES
+   ============================================ */
+.recent-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.recent-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: var(--gray-light);
+    border-radius: var(--radius-sm);
+    border-left: 4px solid var(--secondary);
+    transition: var(--transition);
+}
+
+.recent-item:hover {
+    background-color: #e8eaed;
+    transform: translateX(5px);
+}
+
+.recent-project {
+    font-weight: 600;
+    color: var(--dark);
+    flex: 1;
+}
+
+.recent-details {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--gray-dark);
+    font-size: 0.9rem;
+    margin-right: 15px;
+}
+
+.btn-recent-load {
+    background-color: var(--secondary);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: var(--transition);
+}
+
+.btn-recent-load:hover {
+    background-color: var(--secondary-dark);
+}
+
+.help-list {
+    list-style: none;
+    padding: 0;
+}
+
+.help-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding: 8px 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.help-list li:last-child {
+    border-bottom: none;
+}
+
+.help-list i {
+    color: var(--success);
+    margin-top: 2px;
+}
+
+/* ============================================
+   PRINT STYLES ENHANCEMENT
+   ============================================ */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .quotation-table {
+        border: 1px solid #000;
+    }
+    
+    .table-header {
+        background-color: #f0f0f0 !important;
+        color: #000 !important;
+        -webkit-print-color-adjust: exact;
+    }
+    
+    .grand-total {
+        background-color: #f0f0f0 !important;
+        color: #000 !important;
+        -webkit-print-color-adjust: exact;
+    }
+}
