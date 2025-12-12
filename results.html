@@ -353,7 +353,12 @@
             const noResults = document.getElementById('noResults');
             
             try {
+                // Also save data for quotation page
                 const saved = localStorage.getItem('kfss_last_calculation');
+                if (saved) {
+                    localStorage.setItem('kfss_quotation_data', saved);
+                }
+                
                 if (!saved) {
                     loading.style.display = 'none';
                     noResults.style.display = 'block';
