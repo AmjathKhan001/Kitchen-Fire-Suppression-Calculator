@@ -247,19 +247,37 @@
     <!-- Quotation JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('Quotation page loaded');
             generateQuotation();
         });
-        
+
         function generateQuotation() {
+            console.log('Generating quotation...');
+            
             try {
-                const saved = localStorage.getItem('kfss_last_calculation');
+                // Try multiple keys to find the data
+                let saved = localStorage.getItem('kfss_quotation_data');
                 if (!saved) {
+                    saved = localStorage.getItem('kfss_last_calculation');
+                }
+                
+                if (!saved) {
+                    console.log('No calculation data found in localStorage');
                     showNoData();
                     return;
                 }
                 
                 const calculation = JSON.parse(saved);
-                const currency = calculation.project.currency;
+                console.log('Calculation data found:', calculation);
+                
+                // Validate calculation data
+                if (!calculation.project || !calculation.results) {
+                    console.error('Invalid calculation data structure');
+                    showNoData();
+                    return;
+                }
+                
+                const currency = calculation.project.currency || 'USD';
                 const symbol = {
                     'USD': '$',
                     'EUR': '€',
@@ -268,13 +286,13 @@
                 }[currency] || '$';
                 
                 const quoteNumber = 'Q-' + 
-                    new Date(calculation.timestamp).getFullYear() + '-' +
-                    String(new Date(calculation.timestamp).getMonth() + 1).padStart(2, '0') + '-' +
-                    String(calculation.id).slice(-6);
+                    new Date(calculation.timestamp || Date.now()).getFullYear() + '-' +
+                    String(new Date(calculation.timestamp || Date.now()).getMonth() + 1).padStart(2, '0') + '-' +
+                    String(calculation.id || Date.now()).slice(-6);
                 
                 document.getElementById('quoteNumberDisplay').textContent = 'Quote #: ' + quoteNumber;
                 
-                const quoteDate = new Date(calculation.timestamp);
+                const quoteDate = new Date(calculation.timestamp || Date.now());
                 const validDate = new Date(quoteDate);
                 validDate.setDate(validDate.getDate() + 30);
                 
@@ -296,11 +314,11 @@
                 document.getElementById('clientDetails').innerHTML = `
                     <div class="client-detail-item">
                         <strong>Client Name</strong>
-                        ${calculation.project.client}
+                        ${calculation.project.client || 'Not specified'}
                     </div>
                     <div class="client-detail-item">
                         <strong>Project Name</strong>
-                        ${calculation.project.name}
+                        ${calculation.project.name || 'Not specified'}
                     </div>
                     <div class="client-detail-item">
                         <strong>Project Location</strong>
@@ -308,43 +326,45 @@
                     </div>
                     <div class="client-detail-item">
                         <strong>Calculation Reference</strong>
-                        CALC-${calculation.id}
+                        CALC-${calculation.id || 'N/A'}
                     </div>
                 `;
                 
+                // Create system summary
                 document.getElementById('systemSummary').innerHTML = `
                     <div class="summary-card-item">
                         <div class="label">Total Nozzles</div>
-                        <div class="value">${calculation.results.nozzles.total}</div>
+                        <div class="value">${calculation.results.nozzles?.total || 0}</div>
                         <div class="detail">
-                            Plenum: ${calculation.results.nozzles.plenum}<br>
-                            Duct: ${calculation.results.nozzles.duct}<br>
-                            Appliances: ${calculation.results.nozzles.appliances}
+                            Plenum: ${calculation.results.nozzles?.plenum || 0}<br>
+                            Duct: ${calculation.results.nozzles?.duct || 0}<br>
+                            Appliances: ${calculation.results.nozzles?.appliances || 0}
                         </div>
                     </div>
                     <div class="summary-card-item">
                         <div class="label">Cylinders Required</div>
-                        <div class="value">${calculation.results.cylinders}</div>
+                        <div class="value">${calculation.results.cylinders || 0}</div>
                         <div class="detail">
-                            ${calculation.results.cylinders > 1 ? '10kg cylinders' : '5kg cylinder'}
+                            ${(calculation.results.cylinders || 0) > 1 ? '10kg cylinders' : '5kg cylinder'}
                         </div>
                     </div>
                     <div class="summary-card-item">
                         <div class="label">Agent Weight</div>
-                        <div class="value">${calculation.results.agentWeight.toFixed(1)} kg</div>
+                        <div class="value">${(calculation.results.agentWeight || 0).toFixed(1)} kg</div>
                         <div class="detail">Wet Chemical</div>
                     </div>
                     <div class="summary-card-item">
                         <div class="label">Piping Length</div>
-                        <div class="value">${Math.round(calculation.results.pipingLength)} m</div>
-                        <div class="detail">${calculation.configuration.system.pipeMaterial || 'Galvanized'}</div>
+                        <div class="value">${Math.round(calculation.results.pipingLength || 0)} m</div>
+                        <div class="detail">${calculation.configuration?.system?.pipeMaterial || 'Galvanized'}</div>
                     </div>
                 `;
                 
-                const subtotals = calculation.results.subtotals;
-                const totalCost = calculation.results.totalCost;
-                const safetyFactor = calculation.configuration.system.safetyFactor || 10;
+                const subtotals = calculation.results.subtotals || {};
+                const totalCost = calculation.results.totalCost || 0;
+                const safetyFactor = calculation.configuration?.system?.safetyFactor || 10;
                 
+                // Create quotation table
                 let tableHTML = '';
                 
                 tableHTML += `
@@ -353,42 +373,42 @@
                     </tr>
                     
                     <tr>
-                        <td>Wet Chemical Cylinder System (${calculation.results.cylinders > 1 ? '10kg' : '5kg} cylinders)</td>
-                        <td>${calculation.results.cylinders}</td>
-                        <td>${symbol}${(calculation.results.cylinders > 1 ? 1900 : 1200).toFixed(2)}</td>
-                        <td>${symbol}${subtotals.cylinders.toFixed(2)}</td>
+                        <td>Wet Chemical Cylinder System (${(calculation.results.cylinders || 0) > 1 ? '10kg' : '5kg'} cylinders)</td>
+                        <td>${calculation.results.cylinders || 0}</td>
+                        <td>${symbol}${((calculation.results.cylinders || 0) > 1 ? 1900 : 1200).toFixed(2)}</td>
+                        <td>${symbol}${(subtotals.cylinders || 0).toFixed(2)}</td>
                     </tr>
                     
                     <tr>
                         <td>Discharge Nozzles (various types for plenum, duct & appliances)</td>
-                        <td>${calculation.results.nozzles.total}</td>
+                        <td>${calculation.results.nozzles?.total || 0}</td>
                         <td>${symbol}85.00</td>
-                        <td>${symbol}${subtotals.nozzles.toFixed(2)}</td>
+                        <td>${symbol}${(subtotals.nozzles || 0).toFixed(2)}</td>
                     </tr>
                     
                     <tr>
-                        <td>Piping System (${calculation.configuration.hood.material || 'Galvanized'} steel)</td>
-                        <td>${Math.round(calculation.results.pipingLength)} m</td>
+                        <td>Piping System (${calculation.configuration?.hood?.material || 'Galvanized'} steel)</td>
+                        <td>${Math.round(calculation.results.pipingLength || 0)} m</td>
                         <td>${symbol}35.00/m</td>
-                        <td>${symbol}${subtotals.piping.toFixed(2)}</td>
+                        <td>${symbol}${(subtotals.piping || 0).toFixed(2)}</td>
                     </tr>
                     
                     <tr>
                         <td>Hood & Agent Tank Assembly</td>
                         <td>1</td>
                         <td>${symbol}1800.00</td>
-                        <td>${symbol}${subtotals.hoodAgentTank.toFixed(2)}</td>
+                        <td>${symbol}${(subtotals.hoodAgentTank || 0).toFixed(2)}</td>
                     </tr>
                     
                     <tr>
                         <td>Manual Release Station with Fusible Link Detectors</td>
                         <td>1</td>
                         <td>${symbol}250.00</td>
-                        <td>${symbol}${subtotals.manualRelease.toFixed(2)}</td>
+                        <td>${symbol}${(subtotals.manualRelease || 0).toFixed(2)}</td>
                     </tr>
                 `;
                 
-                if (calculation.configuration.appliances && calculation.configuration.appliances.length > 0) {
+                if (calculation.configuration?.appliances && calculation.configuration.appliances.length > 0) {
                     tableHTML += `
                         <tr class="category-row">
                             <td colspan="4"><i class="fas fa-utensils"></i> Appliance Protection</td>
@@ -396,12 +416,15 @@
                     `;
                     
                     calculation.configuration.appliances.forEach(appliance => {
+                        const price = appliance.price || 0;
+                        const nozzles = appliance.nozzles || 1;
+                        const unitPrice = price / nozzles;
                         tableHTML += `
                             <tr>
-                                <td>${appliance.name} Protection System</td>
-                                <td>${appliance.nozzles}</td>
-                                <td>${symbol}${(appliance.price / appliance.nozzles).toFixed(2)}</td>
-                                <td>${symbol}${appliance.price.toFixed(2)}</td>
+                                <td>${appliance.name || 'Appliance'} Protection System</td>
+                                <td>${nozzles}</td>
+                                <td>${symbol}${unitPrice.toFixed(2)}</td>
+                                <td>${symbol}${price.toFixed(2)}</td>
                             </tr>
                         `;
                     });
@@ -416,14 +439,14 @@
                         <td>Professional Installation & Labor</td>
                         <td>1</td>
                         <td>${symbol}850.00</td>
-                        <td>${symbol}${subtotals.installationLabor.toFixed(2)}</td>
+                        <td>${symbol}${(subtotals.installationLabor || 0).toFixed(2)}</td>
                     </tr>
                     
                     <tr>
                         <td>System Commissioning, Testing & Certification</td>
                         <td>1</td>
                         <td>${symbol}400.00</td>
-                        <td>${symbol}${subtotals.commissioning.toFixed(2)}</td>
+                        <td>${symbol}${(subtotals.commissioning || 0).toFixed(2)}</td>
                     </tr>
                     
                     <tr class="total-row">
@@ -450,30 +473,37 @@
                     <div class="note">In ${currency} • Valid until ${validDate.toLocaleDateString()}</div>
                 `;
                 
+                console.log('Quotation generated successfully');
+                
             } catch (error) {
                 console.error('Error generating quotation:', error);
+                console.error('Error stack:', error.stack);
                 showNoData();
             }
         }
-        
+
         function showNoData() {
-            document.querySelector('.quotation-container').innerHTML = `
-                <div class="card" style="text-align: center; padding: 60px 20px;">
-                    <i class="fas fa-file-invoice-dollar" style="font-size: 4rem; color: var(--gray); margin-bottom: 20px;"></i>
-                    <h2>No Quotation Data Available</h2>
-                    <p style="margin-bottom: 30px; color: var(--gray-dark); max-width: 500px; margin-left: auto; margin-right: auto;">
-                        Please perform a calculation first to generate a professional quotation.
-                    </p>
-                    <div class="action-buttons" style="display: flex; gap: 15px; justify-content: center;">
-                        <a href="index.html" class="btn btn-primary btn-lg">
-                            <i class="fas fa-calculator"></i> Go to Calculator
-                        </a>
-                        <a href="results.html" class="btn btn-outline">
-                            <i class="fas fa-list-alt"></i> View Results
-                        </a>
+            console.log('Showing no data message');
+            const quotationContainer = document.querySelector('.quotation-container');
+            if (quotationContainer) {
+                quotationContainer.innerHTML = `
+                    <div class="card" style="text-align: center; padding: 60px 20px;">
+                        <i class="fas fa-file-invoice-dollar" style="font-size: 4rem; color: var(--gray); margin-bottom: 20px;"></i>
+                        <h2>No Quotation Data Available</h2>
+                        <p style="margin-bottom: 30px; color: var(--gray-dark); max-width: 500px; margin-left: auto; margin-right: auto;">
+                            Please perform a calculation first to generate a professional quotation.
+                        </p>
+                        <div class="action-buttons" style="display: flex; gap: 15px; justify-content: center;">
+                            <a href="index.html" class="btn btn-primary btn-lg">
+                                <i class="fas fa-calculator"></i> Go to Calculator
+                            </a>
+                            <a href="results.html" class="btn btn-outline">
+                                <i class="fas fa-list-alt"></i> View Results
+                            </a>
+                        </div>
                     </div>
-                </div>
-            `;
+                `;
+            }
         }
     </script>
 </body>
