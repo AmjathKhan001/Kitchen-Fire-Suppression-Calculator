@@ -27,7 +27,6 @@
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
     
     <style>
-        /* Results page specific styles */
         .results-container {
             display: flex;
             flex-direction: column;
@@ -160,7 +159,6 @@
             color: var(--dark);
         }
         
-        /* Safety Warnings in Results */
         .safety-warnings-box {
             background: #fff8e1;
             border-left: 4px solid #f9a825;
@@ -192,7 +190,6 @@
             margin-top: 2px;
         }
         
-        /* Print Controls */
         .print-controls {
             position: fixed;
             bottom: 20px;
@@ -264,7 +261,6 @@
         </div>
         
         <div id="resultsContent">
-            <!-- Results will be loaded by JavaScript -->
             <div class="card" id="loadingResults">
                 <div class="loading-state">
                     <div class="spinner"></div>
@@ -282,7 +278,7 @@
             </div>
         </div>
         
-        <!-- Explore Tools Section -->
+        <!-- Explore Tools -->
         <section class="explore-tools">
             <h2><i class="fas fa-star"></i> Explore More Calculators & Tools</h2>
             <p class="section-subtitle">We highly recommend these expert resources for specialized safety and utility tools:</p>
@@ -374,13 +370,6 @@
                     'AED': 'د.إ'
                 }[calculation.project.currency] || '$';
                 
-                const exchangeRate = calculation.results.exchangeRate || 1;
-                
-                const formatCost = (amount) => {
-                    return symbol + (amount * exchangeRate).toFixed(2);
-                };
-                
-                // Generate appliance list HTML
                 let applianceListHTML = '';
                 if (calculation.configuration.appliances && calculation.configuration.appliances.length > 0) {
                     calculation.configuration.appliances.forEach(appliance => {
@@ -388,7 +377,7 @@
                             <div class="appliance-result-item">
                                 <span>${appliance.name}</span>
                                 <span>${appliance.nozzles} nozzle${appliance.nozzles > 1 ? 's' : ''}</span>
-                                <span>${formatCost(appliance.price)}</span>
+                                <span>${symbol}${appliance.price.toFixed(2)}</span>
                             </div>
                         `;
                     });
@@ -396,7 +385,6 @@
                     applianceListHTML = '<p class="no-data-text">No appliances selected</p>';
                 }
                 
-                // Generate safety warnings HTML
                 let safetyWarningsHTML = '';
                 if (calculation.results.safetyWarnings && calculation.results.safetyWarnings.length > 0) {
                     safetyWarningsHTML = `
@@ -453,8 +441,6 @@
                                         <p><strong>Area:</strong> ${calculation.configuration.hood.area.toFixed(1)} m²</p>
                                         <p><strong>Plenum Sections:</strong> ${calculation.configuration.hood.plenumSections}</p>
                                         <p><strong>Duct Openings:</strong> ${calculation.configuration.hood.ductSections}</p>
-                                        ${calculation.configuration.hood.material ? `<p><strong>Material:</strong> ${calculation.configuration.hood.material}</p>` : ''}
-                                        ${calculation.configuration.hood.ductLength ? `<p><strong>Duct Length:</strong> ${calculation.configuration.hood.ductLength} m</p>` : ''}
                                     </div>
                                 </div>
                                 
@@ -465,13 +451,6 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            ${calculation.configuration.system.additionalNotes ? `
-                                <div style="margin-top: 20px; padding: 15px; background: #f5f5f5; border-radius: var(--radius-sm); border-left: 3px solid var(--primary);">
-                                    <strong><i class="fas fa-sticky-note"></i> Additional Notes:</strong>
-                                    <p style="margin-top: 5px;">${calculation.configuration.system.additionalNotes}</p>
-                                </div>
-                            ` : ''}
                         </div>
                         
                         <!-- Bill of Quantities -->
@@ -502,9 +481,6 @@
                                 <div class="boq-item">
                                     <div class="boq-label">Piping Length</div>
                                     <div class="boq-value">${Math.round(calculation.results.pipingLength)} m</div>
-                                    <div class="boq-details">
-                                        <small>${calculation.configuration.system.pipeMaterial || 'Galvanized'} pipe</small>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -518,14 +494,14 @@
                                     return `
                                         <div class="cost-item">
                                             <span>${label}</span>
-                                            <span>${formatCost(value)}</span>
+                                            <span>${symbol}${value.toFixed(2)}</span>
                                         </div>
                                     `;
                                 }).join('')}
                                 
                                 <div class="cost-total">
                                     <strong>Total System Cost</strong>
-                                    <strong>${formatCost(calculation.results.totalCost)}</strong>
+                                    <strong>${symbol}${calculation.results.totalCost.toFixed(2)}</strong>
                                 </div>
                             </div>
                             
@@ -539,9 +515,6 @@
                                 <a href="index.html" class="btn btn-outline">
                                     <i class="fas fa-edit"></i> Edit Calculation
                                 </a>
-                                <button onclick="exportResults()" class="btn btn-outline">
-                                    <i class="fas fa-download"></i> Export
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -551,28 +524,6 @@
                 console.error('Error loading results:', error);
                 loading.style.display = 'none';
                 noResults.style.display = 'block';
-            }
-        }
-        
-        function exportResults() {
-            try {
-                const saved = localStorage.getItem('kfss_last_calculation');
-                if (!saved) {
-                    alert('No calculation to export');
-                    return;
-                }
-                
-                const calculation = JSON.parse(saved);
-                const dataStr = JSON.stringify(calculation, null, 2);
-                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-                const exportFileDefaultName = `kfss-results-${calculation.id}.json`;
-                
-                const linkElement = document.createElement('a');
-                linkElement.setAttribute('href', dataUri);
-                linkElement.setAttribute('download', exportFileDefaultName);
-                linkElement.click();
-            } catch (error) {
-                alert('Error exporting results');
             }
         }
     </script>
