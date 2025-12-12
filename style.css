@@ -1794,3 +1794,551 @@ footer {
     max-width: 1200px;
     margin: 0 auto;
 }
+/* ============================================
+   ADD THESE STYLES TO EXISTING STYLE.CSS
+   ============================================ */
+
+/* Enhanced Quotation Page Styles */
+.quotation-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.quotation-header {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+    border-radius: 0 0 var(--radius) var(--radius);
+}
+
+.quotation-header .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.quotation-title-main {
+    color: white;
+    font-size: 2.2rem;
+    margin: 0;
+    font-weight: 700;
+}
+
+.quote-number-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.company-details-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 25px;
+    box-shadow: var(--shadow);
+    margin-bottom: 25px;
+    border-left: 5px solid var(--primary);
+}
+
+.company-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #eee;
+}
+
+.company-logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+    min-width: 300px;
+}
+
+.company-logo i {
+    font-size: 3rem;
+    color: var(--primary);
+}
+
+.company-info h2 {
+    color: var(--primary);
+    margin-bottom: 5px;
+    font-size: 1.8rem;
+}
+
+.company-info p {
+    margin-bottom: 5px;
+    color: var(--secondary);
+}
+
+.quotation-meta {
+    text-align: right;
+    min-width: 200px;
+}
+
+.quotation-meta .date {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 10px;
+}
+
+.valid-until {
+    color: var(--success);
+    font-weight: 600;
+    background: rgba(46, 125, 50, 0.1);
+    padding: 8px 15px;
+    border-radius: var(--radius-sm);
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.client-info-card {
+    background: var(--gray-light);
+    padding: 25px;
+    border-radius: var(--radius);
+    margin-bottom: 25px;
+}
+
+.client-info-card h3 {
+    color: var(--primary);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.4rem;
+}
+
+.client-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.client-detail-item {
+    background: white;
+    padding: 15px;
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--primary);
+    transition: var(--transition);
+}
+
+.client-detail-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.client-detail-item strong {
+    color: var(--secondary);
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.quotation-table-container {
+    overflow-x: auto;
+    margin: 30px 0;
+    border-radius: var(--radius);
+    border: 1px solid var(--gray-light);
+}
+
+.quotation-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    min-width: 800px;
+}
+
+.quotation-table thead {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+}
+
+.quotation-table th {
+    padding: 18px 15px;
+    text-align: left;
+    font-weight: 600;
+    border: none;
+    font-size: 1rem;
+}
+
+.quotation-table tbody tr {
+    border-bottom: 1px solid #eee;
+    transition: var(--transition);
+}
+
+.quotation-table tbody tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+.quotation-table tbody tr:hover {
+    background: rgba(198, 40, 40, 0.03);
+}
+
+.quotation-table td {
+    padding: 15px;
+    vertical-align: middle;
+}
+
+.category-row {
+    background: #f5f5f5 !important;
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 1rem;
+}
+
+.total-row {
+    background: var(--gray-light) !important;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.grand-total-row {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark)) !important;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.grand-total-row td {
+    padding: 20px 15px;
+}
+
+.terms-section {
+    background: white;
+    padding: 30px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
+
+.terms-section h3 {
+    color: var(--primary);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+}
+
+.terms-list {
+    padding-left: 20px;
+    margin-bottom: 30px;
+}
+
+.terms-list li {
+    margin-bottom: 12px;
+    line-height: 1.6;
+    color: var(--secondary);
+}
+
+.signature-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid #eee;
+}
+
+.signature-box {
+    text-align: center;
+    padding: 20px;
+    background: var(--gray-light);
+    border-radius: var(--radius);
+}
+
+.signature-line {
+    height: 1px;
+    background: #333;
+    margin: 40px 0 20px;
+    position: relative;
+}
+
+.signature-line:after {
+    content: "";
+    position: absolute;
+    top: -15px;
+    left: 0;
+    right: 0;
+    height: 30px;
+    border-bottom: 1px solid #333;
+}
+
+.print-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.print-controls .btn {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.calculation-notice {
+    background: #fff8e1;
+    border-left: 4px solid #f9a825;
+    padding: 20px;
+    border-radius: var(--radius-sm);
+    margin: 20px 0;
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.calculation-notice i {
+    color: #f9a825;
+    font-size: 1.5rem;
+    margin-top: 2px;
+}
+
+.calculation-notice strong {
+    color: var(--danger);
+}
+
+.system-summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.summary-card-item {
+    background: white;
+    padding: 20px;
+    border-radius: var(--radius);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    border-top: 4px solid var(--primary);
+    transition: var(--transition);
+}
+
+.summary-card-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+}
+
+.summary-card-item .label {
+    font-size: 0.9rem;
+    color: var(--gray-dark);
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.summary-card-item .value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 5px;
+}
+
+.summary-card-item .detail {
+    font-size: 0.85rem;
+    color: var(--gray);
+    line-height: 1.4;
+}
+
+.total-display {
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+    color: white;
+    padding: 30px;
+    border-radius: var(--radius);
+    text-align: center;
+    margin: 30px 0;
+    box-shadow: var(--shadow);
+}
+
+.total-display .label {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    opacity: 0.9;
+    font-weight: 600;
+}
+
+.total-display .amount {
+    font-size: 2.8rem;
+    font-weight: 800;
+    margin: 10px 0;
+    letter-spacing: 1px;
+}
+
+.total-display .note {
+    font-size: 0.95rem;
+    opacity: 0.9;
+    margin-top: 10px;
+}
+
+.btn-outline-secondary {
+    background-color: transparent;
+    color: var(--secondary);
+    border: 2px solid var(--secondary);
+}
+
+.btn-outline-secondary:hover {
+    background-color: rgba(69, 90, 100, 0.05);
+    color: var(--secondary-dark);
+}
+
+.no-print {
+    display: block;
+}
+
+/* Fix for quotation container width */
+.quotation-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Enhanced responsive styles for quotation page */
+@media (max-width: 1024px) {
+    .company-header {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .quotation-meta {
+        text-align: left;
+        width: 100%;
+    }
+    
+    .signature-area {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .quotation-header .header-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .quote-number-badge {
+        margin-top: 10px;
+    }
+    
+    .company-logo {
+        flex-direction: column;
+        text-align: center;
+        min-width: auto;
+    }
+    
+    .client-details {
+        grid-template-columns: 1fr;
+    }
+    
+    .system-summary-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .print-controls {
+        position: static;
+        justify-content: center;
+        margin: 20px 0;
+        flex-wrap: wrap;
+    }
+    
+    .quotation-table {
+        min-width: 600px;
+    }
+    
+    .total-display .amount {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .system-summary-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .quotation-table th,
+    .quotation-table td {
+        padding: 10px 8px;
+        font-size: 0.9rem;
+    }
+    
+    .total-display .amount {
+        font-size: 1.8rem;
+    }
+    
+    .terms-section {
+        padding: 20px 15px;
+    }
+}
+
+@media print {
+    .print-controls,
+    .no-print {
+        display: none !important;
+    }
+    
+    body {
+        font-size: 12pt;
+        background: white;
+        color: black;
+    }
+    
+    .container {
+        max-width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .quotation-header {
+        background: #333 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .quotation-table thead {
+        background: #333 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .grand-total-row {
+        background: #333 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .total-display {
+        background: #666 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+        page-break-inside: avoid;
+    }
+    
+    .quotation-table {
+        page-break-inside: avoid;
+    }
+    
+    .signature-area {
+        page-break-inside: avoid;
+    }
+}
