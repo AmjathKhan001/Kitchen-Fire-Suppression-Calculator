@@ -1611,3 +1611,25 @@ footer {
         padding: 20px 15px;
     }
 }
+/* Fix for Blog Sidebar Tool Cards */
+.blog-sidebar .sidebar-tool-card {
+    min-width: 0 !important; /* Prevents cards from forcing a minimum width */
+    flex: none !important; /* Stops cards from trying to grow/shrink */
+    width: 100% !important; /* Makes cards fill the sidebar width */
+    margin-bottom: 15px; /* Adds consistent spacing */
+    border-left: 3px solid var(--secondary); /* Optional: subtle styling */
+    box-shadow: var(--shadow-sm); /* Optional: lighter shadow */
+}
+
+.blog-sidebar .sidebar-tool-card h4 {
+    color: var(--primary);
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.blog-sidebar .sidebar-tool-card p {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 10px;
+    color: var(--gray-dark);
+}
