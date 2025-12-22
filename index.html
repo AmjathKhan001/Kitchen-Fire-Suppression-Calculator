@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Professional KFSS Calculator | Kitchen Fire Safety Design Tool</title>
     
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Professional Kitchen Fire Suppression System Calculator. NFPA 96 & NFPA 17A compliant design tool for wet chemical fire suppression systems. Free online calculator for fire safety professionals.">
+    <meta name="keywords" content="kitchen fire suppression, fire safety calculator, NFPA 96, NFPA 17A, wet chemical system, fire protection, restaurant fire safety, commercial kitchen">
+    <meta name="author" content="Fire Safety Solutions">
+    <meta name="robots" content="index, follow">
+    
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-376208036"></script>
     <script>
@@ -26,8 +32,760 @@
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
     
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Professional Kitchen Fire Suppression Calculator">
+    <meta property="og:description" content="Free online calculator for kitchen fire suppression system design. NFPA compliant tool for professionals.">
+    <meta property="og:type" content="website">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Kitchen Fire Suppression Calculator",
+        "description": "Professional calculator for kitchen fire suppression system design",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "Amjath Khan"
+        }
+    }
+    </script>
+    
+    <style>
+        /* Additional styles for export dropdown */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-toggle {
+            cursor: pointer;
+            position: relative;
+            padding-right: 30px;
+        }
+        
+        .dropdown-toggle:after {
+            content: "▼";
+            font-size: 0.7em;
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background: white;
+            min-width: 180px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: var(--radius-sm);
+            z-index: 100;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        
+        .dropdown-item {
+            display: block;
+            padding: 12px 15px;
+            color: var(--dark);
+            text-decoration: none;
+            border-bottom: 1px solid #eee;
+            transition: var(--transition);
+        }
+        
+        .dropdown-item:hover {
+            background: var(--gray-light);
+            color: var(--primary);
+        }
+        
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-item i {
+            margin-right: 8px;
+            width: 20px;
+        }
+        
+        /* Emergency Guidance Styles */
+        .emergency-guidance {
+            background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+            padding: 3rem 0;
+            margin: 3rem 0;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .emergency-guidance h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 2rem;
+        }
+        
+        .guidance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 1rem;
+        }
+        
+        .guidance-card {
+            background: white;
+            padding: 25px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .guidance-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .guidance-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .guidance-icon.emergency {
+            background: #ffebee;
+            color: var(--primary);
+        }
+        
+        .guidance-icon.warning {
+            background: #fff8e1;
+            color: #f9a825;
+        }
+        
+        .guidance-icon.info {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        .guidance-card h3 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .guidance-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .guidance-card li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.5;
+        }
+        
+        .guidance-card li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-fire-extinguisher"></i>
+                    <div>
+                        <h1>Professional KFSS Calculator</h1>
+                        <span>Kitchen Fire Suppression System Design Tool</span>
+                    </div>
+                </div>
+                <div class="visitor-counter">
+                    <i class="fas fa-eye"></i>
+                    <span>Visitors: <span id="visitorCount">1,000</span>+</span>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="container">
+            <ul>
+                <li class="active"><a href="index.html"><i class="fas fa-calculator"></i> Calculator</a></li>
+                <li><a href="results.html"><i class="fas fa-list-alt"></i> Results</a></li>
+                <li><a href="quotation.html"><i class="fas fa-file-invoice-dollar"></i> Quotation</a></li>
+                <li><a href="blog.html"><i class="fas fa-blog"></i> Blog</a></li>
+                <li><a href="privacy.html"><i class="fas fa-shield-alt"></i> Privacy</a></li>
+                <li class="mode-toggle">
+                    <label class="switch">
+                        <input type="checkbox" id="expertModeToggle">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="mode-label">Expert Mode</span>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <div class="page-header">
+            <h2><i class="fas fa-project-diagram"></i> Kitchen Fire Suppression System Calculator</h2>
+            <p>Design and calculate wet chemical systems compliant with NFPA standards</p>
+        </div>
+        
+        <!-- Alert Banner -->
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i>
+            <span>All calculations are based on NFPA 96 and NFPA 17A standards for wet chemical kitchen fire suppression systems.</span>
+        </div>
+        
+        <main>
+            <!-- Left Column -->
+            <div class="column">
+                <!-- Project Info Card -->
+                <div class="card">
+                    <h3 class="card-title"><i class="fas fa-project-diagram"></i> Project Information</h3>
+                    
+                    <div class="form-group">
+                        <label for="projectName" class="required">Project Name</label>
+                        <input type="text" id="projectName" placeholder="Enter project name" value="Commercial Kitchen Design">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="clientName" class="required">Client Name</label>
+                        <input type="text" id="clientName" placeholder="Enter client name" value="Restaurant Corporation">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="projectLocation">Project Location</label>
+                        <input type="text" id="projectLocation" placeholder="City, State">
+                    </div>
+                    
+                    <div class="currency-selector">
+                        <label for="currency">Currency:</label>
+                        <select id="currency">
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="INR">INR (₹)</option>
+                            <option value="AED">AED (د.إ)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Hood & Duct Configuration -->
+                <div class="card">
+                    <h3 class="card-title"><i class="fas fa-warehouse"></i> Hood & Duct Configuration</h3>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="hoodLength" class="required">Hood Length (m)</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="hoodLength" min="0.5" max="20" step="0.1" value="3.0">
+                                <span class="unit">meters</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="hoodDepth" class="required">Hood Depth (m)</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="hoodDepth" min="0.5" max="5" step="0.1" value="1.2">
+                                <span class="unit">meters</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="plenumSections" class="required">Plenum Sections</label>
+                            <input type="number" id="plenumSections" min="1" max="10" value="2">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ductSections" class="required">Duct Openings</label>
+                            <input type="number" id="ductSections" min="0" max="10" value="1">
+                        </div>
+                    </div>
+                    
+                    <!-- Expert Mode Additional Fields -->
+                    <div id="expertHoodPanel" class="expert-panel">
+                        <div class="form-group">
+                            <label for="hoodMaterial">Hood Material</label>
+                            <select id="hoodMaterial">
+                                <option value="stainless">Stainless Steel</option>
+                                <option value="galvanized">Galvanized Steel</option>
+                                <option value="aluminum">Aluminum</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ductLength">Duct Length (m)</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="ductLength" min="0" max="50" step="0.5" value="5.0">
+                                <span class="unit">meters</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Appliance Selection -->
+                <div class="card">
+                    <h3 class="card-title"><i class="fas fa-utensils"></i> Appliance Selection</h3>
+                    <p>Select the appliances under the hood:</p>
+                    
+                    <div class="appliance-list" id="applianceList">
+                        <!-- Appliance items will be generated by JavaScript -->
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label for="customAppliance">Add Custom Appliance</label>
+                        <div class="custom-appliance-form">
+                            <input type="text" id="customAppliance" placeholder="Appliance name">
+                            <input type="number" id="customNozzles" min="1" max="5" placeholder="Nozzles" value="1">
+                            <button id="addCustomAppliance" class="btn btn-outline">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column -->
+            <div class="column">
+                <!-- System Summary -->
+                <div class="card summary-card">
+                    <h3 class="card-title"><i class="fas fa-calculator"></i> System Summary</h3>
+                    
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <div class="summary-label">Hood Area</div>
+                            <div class="summary-value" id="summaryHoodArea">3.6 m²</div>
+                        </div>
+                        
+                        <div class="summary-item">
+                            <div class="summary-label">Plenum Nozzles</div>
+                            <div class="summary-value" id="summaryPlenumNozzles">2</div>
+                        </div>
+                        
+                        <div class="summary-item">
+                            <div class="summary-label">Duct Nozzles</div>
+                            <div class="summary-value" id="summaryDuctNozzles">1</div>
+                        </div>
+                        
+                        <div class="summary-item">
+                            <div class="summary-label">Appliance Nozzles</div>
+                            <div class="summary-value" id="summaryApplianceNozzles">0</div>
+                        </div>
+                        
+                        <div class="summary-item">
+                            <div class="summary-label">Total Nozzles</div>
+                            <div class="summary-value highlight" id="summaryTotalNozzles">3</div>
+                        </div>
+                        
+                        <div class="summary-item">
+                            <div class="summary-label">Cylinders Required</div>
+                            <div class="summary-value" id="summaryCylinders">1</div>
+                        </div>
+                        
+                        <div class="summary-item">
+                            <div class="summary-label">Agent Weight</div>
+                            <div class="summary-value" id="summaryAgentWeight">5.7 kg</div>
+                        </div>
+                        
+                        <div class="summary-item">
+                            <div class="summary-label">Piping Length</div>
+                            <div class="summary-value" id="summaryPiping">11 m</div>
+                        </div>
+                    </div>
+                    
+                    <div class="total-cost">
+                        <div class="total-label">Estimated System Cost</div>
+                        <div class="total-value" id="summaryCost">$4,850.25</div>
+                        <div class="currency-note">in <span id="summaryCurrency">USD</span></div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button id="calculateBtn" class="btn btn-primary btn-lg">
+                            <i class="fas fa-calculator"></i> Calculate & View Details
+                        </button>
+                        <button id="resetBtn" class="btn btn-secondary">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle">
+                                <i class="fas fa-download"></i> Export
+                            </button>
+                            <div class="dropdown-menu">
+                                <a href="#" id="exportJson" class="dropdown-item">
+                                    <i class="fas fa-file-code"></i> JSON
+                                </a>
+                                <a href="#" id="exportCsv" class="dropdown-item">
+                                    <i class="fas fa-file-csv"></i> CSV
+                                </a>
+                                <a href="#" id="shareLink" class="dropdown-item">
+                                    <i class="fas fa-share"></i> Share Link
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Safety Warnings Card -->
+                <div class="card">
+                    <h3 class="card-title"><i class="fas fa-shield-alt"></i> Safety Compliance Check</h3>
+                    <div id="safetyWarnings">
+                        <div class="safety-status loading">
+                            <div class="spinner small"></div>
+                            <div>
+                                <strong>Checking safety requirements...</strong>
+                                <small>Validating against NFPA standards</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Calculations -->
+                <div class="card">
+                    <h3 class="card-title"><i class="fas fa-history"></i> Recent Calculations</h3>
+                    <div id="recentCalculations">
+                        <div class="empty-state">
+                            <i class="fas fa-clock"></i>
+                            <p>No recent calculations</p>
+                            <small>Your calculations will appear here</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Help -->
+                <div class="card">
+                    <h3 class="card-title"><i class="fas fa-question-circle"></i> Quick Help</h3>
+                    <ul class="help-list">
+                        <li><i class="fas fa-check-circle"></i> One nozzle required per plenum section</li>
+                        <li><i class="fas fa-check-circle"></i> One nozzle required per duct opening</li>
+                        <li><i class="fas fa-check-circle"></i> Standard nozzle coverage: 600mm × 600mm area</li>
+                        <li><i class="fas fa-check-circle"></i> Cylinder selection based on max nozzles per cylinder</li>
+                        <li><i class="fas fa-check-circle"></i> Piping estimate: 2m per nozzle + 5m main run</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Expert Panel -->
+        <div class="card expert-panel-card" id="expertPanel">
+            <h3 class="card-title"><i class="fas fa-cogs"></i> Expert Configuration</h3>
+            <div class="expert-panel-content">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="nozzleType">Nozzle Type</label>
+                        <select id="nozzleType">
+                            <option value="standard">Standard Appliance Nozzle</option>
+                            <option value="high-flow">High-Flow Plenum Nozzle</option>
+                            <option value="low-flow">Low-Flow Extended Coverage</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="pipeMaterial">Piping Material</label>
+                        <select id="pipeMaterial">
+                            <option value="galvanized">Galvanized Steel</option>
+                            <option value="stainless">Stainless Steel</option>
+                            <option value="copper">Copper</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="safetyFactor">Safety Factor (%)</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="safetyFactor" min="0" max="50" step="5" value="10">
+                            <span class="unit">%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="pressureRating">System Pressure (PSI)</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="pressureRating" min="50" max="300" step="10" value="100">
+                            <span class="unit">PSI</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="additionalNotes">Additional Notes</label>
+                    <textarea id="additionalNotes" rows="3" placeholder="Add any special requirements or notes..."></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Emergency Procedures -->
+        <section class="emergency-guidance">
+            <div class="container">
+                <h2><i class="fas fa-exclamation-triangle"></i> Emergency Response Guidelines</h2>
+                <div class="guidance-grid">
+                    <div class="guidance-card">
+                        <div class="guidance-icon emergency">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <h3>Kitchen Fire Emergency</h3>
+                        <ul>
+                            <li>Activate manual release station immediately</li>
+                            <li>Evacuate all personnel from the area</li>
+                            <li>Call emergency services (911/112)</li>
+                            <li>Do not re-enter until cleared by fire department</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="guidance-card">
+                        <div class="guidance-icon warning">
+                            <i class="fas fa-exclamation"></i>
+                        </div>
+                        <h3>System Maintenance</h3>
+                        <ul>
+                            <li>Monthly visual inspection of all components</li>
+                            <li>Annual professional inspection required</li>
+                            <li>Test manual release station quarterly</li>
+                            <li>Keep area around cylinders clear (1m radius)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="guidance-card">
+                        <div class="guidance-icon info">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3>Staff Training</h3>
+                        <ul>
+                            <li>Train all kitchen staff on system operation</li>
+                            <li>Conduct fire drills every 6 months</li>
+                            <li>Post emergency procedures in kitchen</li>
+                            <li>Maintain training records</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact & Social Section -->
+        <div class="contact-section">
+            <h4><i class="fas fa-envelope"></i> Contact & Support</h4>
+            <div class="contact-info">
+                <p><i class="fas fa-envelope"></i> Email: <a href="mailto:contact@amjathkhan.com">contact@amjathkhan.com</a></p>
+                <p><i class="fas fa-phone"></i> Phone: <a href="tel:+919750816163">+91-9750816163</a></p>
+                <p><i class="fas fa-globe"></i> Website: <a href="https://www.amjathkhan.com/" target="_blank">amjathkhan.com</a></p>
+            </div>
+            
+            <h4><i class="fas fa-share-alt"></i> Social Media</h4>
+            <div class="social-links">
+                <a href="https://www.facebook.com/Amjathkhan.s" target="_blank" class="social-link facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://www.instagram.com/amjathkhan_official/#" target="_blank" class="social-link instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://x.com/amjikhan" target="_blank" class="social-link twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/amjathkhan-shiekusman/" target="_blank" class="social-link linkedin">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://bsky.app/profile/amjathkhan.bsky.social" target="_blank" class="social-link bluesky">
+                    <i class="fab fa-bluesky"></i>
+                </a>
+            </div>
+            
+            <h4><i class="fas fa-share-square"></i> Share This Tool</h4>
+            <div class="social-share">
+                <button onclick="shareOnFacebook()" class="share-btn facebook">
+                    <i class="fab fa-facebook-f"></i> Facebook
+                </button>
+                <button onclick="shareOnTwitter()" class="share-btn twitter">
+                    <i class="fab fa-twitter"></i> Twitter
+                </button>
+                <button onclick="shareOnLinkedIn()" class="share-btn linkedin">
+                    <i class="fab fa-linkedin-in"></i> LinkedIn
+                </button>
+                <button onclick="shareViaEmail()" class="share-btn email">
+                    <i class="fas fa-envelope"></i> Email
+                </button>
+            </div>
+        </div>
+        
+        <!-- Explore Tools -->
+        <section class="explore-tools">
+            <h2><i class="fas fa-star"></i> Explore More Calculators & Tools</h2>
+            <p class="section-subtitle">Complete suite of professional calculators and tools for safety professionals</p>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-icon">🔥</div>
+                    <h3>Fire Safety Tool</h3>
+                    <p>Comprehensive suite of NFPA & IBC compliant calculators for clean agent, CO₂, foam systems, and egress planning.</p>
+                    <a href="https://www.firesafetytool.com" target="_blank" class="tool-link">Visit Site <i class="fas fa-external-link-alt"></i></a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🛡️</div>
+                    <h3>HSE Calculator</h3>
+                    <p>Health, Safety & Environment tools for risk assessment, noise exposure, incident rates, and compliance management.</p>
+                    <a href="https://www.hsecalculator.com" target="_blank" class="tool-link">Visit Site <i class="fas fa-external-link-alt"></i></a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">⚙️</div>
+                    <h3>Web Tools Daily</h3>
+                    <p>Collection of free, privacy-focused utilities like image converters and formatters that work directly in your browser.</p>
+                    <a href="https://www.webtoolsdaily.com" target="_blank" class="tool-link">Visit Site <i class="fas fa-external-link-alt"></i></a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🧯</div>
+                    <h3>Fire Extinguisher Calculator</h3>
+                    <p>BIS 2190:2024 compliant calculator for determining exact fire extinguisher requirements.</p>
+                    <a href="https://safetyguide360-fire-extinguisher-ca.vercel.app/" target="_blank" class="tool-link">Try Tool <i class="fas fa-external-link-alt"></i></a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🏢</div>
+                    <h3>Ceiling Mounted Fire Extinguisher</h3>
+                    <p>Estimation tool for ceiling mounted fire extinguisher systems.</p>
+                    <a href="https://safetyguide360-ceilingmounted-firee.vercel.app/" target="_blank" class="tool-link">Try Tool <i class="fas fa-external-link-alt"></i></a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🍳</div>
+                    <h3>Kitchen Suppression System</h3>
+                    <p>Professional kitchen fire suppression system calculator (Current Tool).</p>
+                    <a href="https://kitchen-fire-suppression-calculator.vercel.app/" target="_blank" class="tool-link">Try Tool <i class="fas fa-external-link-alt"></i></a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🚪</div>
+                    <h3>Room Flooding System</h3>
+                    <p>Estimation tool for room flooding fire suppression systems.</p>
+                    <a href="https://safetyguide360-room-flooding-system.vercel.app/" target="_blank" class="tool-link">Try Tool <i class="fas fa-external-link-alt"></i></a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🛡️</div>
+                    <h3>Panel Fire Suppression</h3>
+                    <p>Calculator for panel-based fire suppression systems.</p>
+                    <a href="https://safetyguide360-panel-fire-suppressi.vercel.app/" target="_blank" class="tool-link">Try Tool <i class="fas fa-external-link-alt"></i></a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">📋</div>
+                    <h3>Fire Extinguisher Audit</h3>
+                    <p>Health checkup and audit tool for fire extinguishers.</p>
+                    <a href="https://safetyguide360-fire-extinguisher-au.vercel.app/" target="_blank" class="tool-link">Try Tool <i class="fas fa-external-link-alt"></i></a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">📊</div>
+                    <h3>Fire Safety Assessment</h3>
+                    <p>Comprehensive fire safety risk assessment platform.</p>
+                    <a href="https://safetyguide360-firesafety-assessmen.vercel.app/" target="_blank" class="tool-link">Try Tool <i class="fas fa-external-link-alt"></i></a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">⚕️</div>
+                    <h3>HSE Toolkit</h3>
+                    <p>Complete HSE toolkit for safety professionals.</p>
+                    <a href="https://hse-toolkit.vercel.app/" target="_blank" class="tool-link">Try Tool <i class="fas fa-external-link-alt"></i></a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🎨</div>
+                    <h3>Designing Tool</h3>
+                    <p>Auratext - Professional designing and text tools.</p>
+                    <a href="https://www.auratext.online/" target="_blank" class="tool-link">Visit Site <i class="fas fa-external-link-alt"></i></a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Amazon Associates Banner -->
+        <aside class="affiliate-banner">
+            <a href="https://amzn.to/4p8ceG6" target="_blank" class="amazon-button">
+                <span class="sale-badge">Clearance Sale! Up to 70% Off</span>
+                <span class="banner-text">🔥 Shop Fire Safety Equipment on Amazon</span>
+                <i class="fas fa-bolt"></i>
+            </a>
+        </aside>
+        
+        <!-- Buy Me a Coffee -->
+        <div class="coffee-container">
+            <p>If this tool helped you, consider supporting our work:</p>
+            <a href="https://buymeacoffee.com/s.amjathkhan" target="_blank" class="coffee-button">
+                <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee">
+            </a>
+        </div>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-fire-extinguisher"></i>
+                    <span>KFSS Calculator</span>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html">Calculator</a>
+                    <a href="results.html">Results</a>
+                    <a href="quotation.html">Quotation</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="privacy.html">Privacy</a>
+                    <a href="terms.html">Terms</a>
+                    <a href="affiliate.html">Affiliate</a>
+                </div>
+                <div class="footer-disclaimer">
+                    <p>© 2023 Fire Safety Solutions. This tool is for estimation purposes only. Final design must be verified by a licensed professional.</p>
+                    <p>Compliant with NFPA 96 & NFPA 17A standards for wet chemical kitchen fire suppression systems.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
     <!-- INLINE JAVASCRIPT -->
     <script>
+        // Social Sharing Functions
+        function shareOnFacebook() {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent(document.title);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${title}`, '_blank');
+        }
+        
+        function shareOnTwitter() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent("Check out this professional Kitchen Fire Suppression Calculator!");
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+        }
+        
+        function shareOnLinkedIn() {
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+        }
+        
+        function shareViaEmail() {
+            const subject = encodeURIComponent("Kitchen Fire Suppression Calculator - Professional Tool");
+            const body = encodeURIComponent(`Check out this professional tool: ${window.location.href}\n\nProfessional Kitchen Fire Suppression System Calculator with NFPA compliance.`);
+            window.location.href = `mailto:?subject=${subject}&body=${body}`;
+        }
+        
+        // Copy link to clipboard
+        function copyToClipboard() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('Link copied to clipboard!');
+            });
+        }
+
         // KFSS Calculator
         const KFSSCalculator = {
             currentCalculation: null,
@@ -163,6 +921,12 @@
             
             init: function() {
                 console.log('Initializing KFSS Calculator...');
+                
+                // Visitor counter
+                let visitorCount = localStorage.getItem('siteVisitorCount') || 1000;
+                visitorCount = parseInt(visitorCount) + 1;
+                localStorage.setItem('siteVisitorCount', visitorCount);
+                document.getElementById('visitorCount').textContent = visitorCount.toLocaleString();
                 
                 this.initializeAppliances();
                 this.setupEventListeners();
@@ -886,594 +1650,5 @@
             KFSSCalculator.importFromURL();
         });
     </script>
-    
-    <style>
-        /* Additional styles for export dropdown */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .dropdown-toggle {
-            cursor: pointer;
-            position: relative;
-            padding-right: 30px;
-        }
-        
-        .dropdown-toggle:after {
-            content: "▼";
-            font-size: 0.7em;
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-        
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            background: white;
-            min-width: 180px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-            border-radius: var(--radius-sm);
-            z-index: 100;
-            margin-top: 5px;
-            overflow: hidden;
-        }
-        
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
-        
-        .dropdown-item {
-            display: block;
-            padding: 12px 15px;
-            color: var(--dark);
-            text-decoration: none;
-            border-bottom: 1px solid #eee;
-            transition: var(--transition);
-        }
-        
-        .dropdown-item:hover {
-            background: var(--gray-light);
-            color: var(--primary);
-        }
-        
-        .dropdown-item:last-child {
-            border-bottom: none;
-        }
-        
-        .dropdown-item i {
-            margin-right: 8px;
-            width: 20px;
-        }
-        
-        /* Emergency Guidance Styles */
-        .emergency-guidance {
-            background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
-            padding: 3rem 0;
-            margin: 3rem 0;
-            border-top: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .emergency-guidance h2 {
-            text-align: center;
-            color: var(--primary);
-            margin-bottom: 2rem;
-        }
-        
-        .guidance-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-top: 1rem;
-        }
-        
-        .guidance-card {
-            background: white;
-            padding: 25px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-        
-        .guidance-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-        
-        .guidance-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-        }
-        
-        .guidance-icon.emergency {
-            background: #ffebee;
-            color: var(--primary);
-        }
-        
-        .guidance-icon.warning {
-            background: #fff8e1;
-            color: #f9a825;
-        }
-        
-        .guidance-icon.info {
-            background: #e3f2fd;
-            color: #1565c0;
-        }
-        
-        .guidance-card h3 {
-            color: var(--secondary);
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-        }
-        
-        .guidance-card ul {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .guidance-card li {
-            margin-bottom: 10px;
-            padding-left: 25px;
-            position: relative;
-            line-height: 1.5;
-        }
-        
-        .guidance-card li:before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: var(--success);
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <i class="fas fa-fire-extinguisher"></i>
-                    <div>
-                        <h1>Professional KFSS Calculator</h1>
-                        <span>Kitchen Fire Suppression System Design Tool</span>
-                    </div>
-                </div>
-                <div class="standards">
-                    <i class="fas fa-shield-alt"></i> Compliant with NFPA 96 & NFPA 17A
-                </div>
-            </div>
-        </div>
-    </header>
-    
-    <!-- Navigation -->
-    <nav class="main-nav">
-        <div class="container">
-            <ul>
-                <li class="active"><a href="index.html"><i class="fas fa-calculator"></i> Calculator</a></li>
-                <li><a href="results.html"><i class="fas fa-list-alt"></i> Results</a></li>
-                <li><a href="quotation.html"><i class="fas fa-file-invoice-dollar"></i> Quotation</a></li>
-                <li class="mode-toggle">
-                    <label class="switch">
-                        <input type="checkbox" id="expertModeToggle">
-                        <span class="slider"></span>
-                    </label>
-                    <span class="mode-label">Expert Mode</span>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    
-    <!-- Main Content -->
-    <div class="container">
-        <div class="page-header">
-            <h2><i class="fas fa-project-diagram"></i> Kitchen Fire Suppression System Calculator</h2>
-            <p>Design and calculate wet chemical systems compliant with NFPA standards</p>
-        </div>
-        
-        <!-- Alert Banner -->
-        <div class="alert alert-info">
-            <i class="fas fa-info-circle"></i>
-            <span>All calculations are based on NFPA 96 and NFPA 17A standards for wet chemical kitchen fire suppression systems.</span>
-        </div>
-        
-        <main>
-            <!-- Left Column -->
-            <div class="column">
-                <!-- Project Info Card -->
-                <div class="card">
-                    <h3 class="card-title"><i class="fas fa-project-diagram"></i> Project Information</h3>
-                    
-                    <div class="form-group">
-                        <label for="projectName" class="required">Project Name</label>
-                        <input type="text" id="projectName" placeholder="Enter project name" value="Commercial Kitchen Design">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="clientName" class="required">Client Name</label>
-                        <input type="text" id="clientName" placeholder="Enter client name" value="Restaurant Corporation">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="projectLocation">Project Location</label>
-                        <input type="text" id="projectLocation" placeholder="City, State">
-                    </div>
-                    
-                    <div class="currency-selector">
-                        <label for="currency">Currency:</label>
-                        <select id="currency">
-                            <option value="USD">USD ($)</option>
-                            <option value="EUR">EUR (€)</option>
-                            <option value="INR">INR (₹)</option>
-                            <option value="AED">AED (د.إ)</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <!-- Hood & Duct Configuration -->
-                <div class="card">
-                    <h3 class="card-title"><i class="fas fa-warehouse"></i> Hood & Duct Configuration</h3>
-                    
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="hoodLength" class="required">Hood Length (m)</label>
-                            <div class="input-with-unit">
-                                <input type="number" id="hoodLength" min="0.5" max="20" step="0.1" value="3.0">
-                                <span class="unit">meters</span>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="hoodDepth" class="required">Hood Depth (m)</label>
-                            <div class="input-with-unit">
-                                <input type="number" id="hoodDepth" min="0.5" max="5" step="0.1" value="1.2">
-                                <span class="unit">meters</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="plenumSections" class="required">Plenum Sections</label>
-                            <input type="number" id="plenumSections" min="1" max="10" value="2">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="ductSections" class="required">Duct Openings</label>
-                            <input type="number" id="ductSections" min="0" max="10" value="1">
-                        </div>
-                    </div>
-                    
-                    <!-- Expert Mode Additional Fields -->
-                    <div id="expertHoodPanel" class="expert-panel">
-                        <div class="form-group">
-                            <label for="hoodMaterial">Hood Material</label>
-                            <select id="hoodMaterial">
-                                <option value="stainless">Stainless Steel</option>
-                                <option value="galvanized">Galvanized Steel</option>
-                                <option value="aluminum">Aluminum</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="ductLength">Duct Length (m)</label>
-                            <div class="input-with-unit">
-                                <input type="number" id="ductLength" min="0" max="50" step="0.5" value="5.0">
-                                <span class="unit">meters</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Appliance Selection -->
-                <div class="card">
-                    <h3 class="card-title"><i class="fas fa-utensils"></i> Appliance Selection</h3>
-                    <p>Select the appliances under the hood:</p>
-                    
-                    <div class="appliance-list" id="applianceList">
-                        <!-- Appliance items will be generated by JavaScript -->
-                    </div>
-                    
-                    <div class="form-group" style="margin-top: 20px;">
-                        <label for="customAppliance">Add Custom Appliance</label>
-                        <div class="custom-appliance-form">
-                            <input type="text" id="customAppliance" placeholder="Appliance name">
-                            <input type="number" id="customNozzles" min="1" max="5" placeholder="Nozzles" value="1">
-                            <button id="addCustomAppliance" class="btn btn-outline">
-                                <i class="fas fa-plus"></i> Add
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Right Column -->
-            <div class="column">
-                <!-- System Summary -->
-                <div class="card summary-card">
-                    <h3 class="card-title"><i class="fas fa-calculator"></i> System Summary</h3>
-                    
-                    <div class="summary-grid">
-                        <div class="summary-item">
-                            <div class="summary-label">Hood Area</div>
-                            <div class="summary-value" id="summaryHoodArea">3.6 m²</div>
-                        </div>
-                        
-                        <div class="summary-item">
-                            <div class="summary-label">Plenum Nozzles</div>
-                            <div class="summary-value" id="summaryPlenumNozzles">2</div>
-                        </div>
-                        
-                        <div class="summary-item">
-                            <div class="summary-label">Duct Nozzles</div>
-                            <div class="summary-value" id="summaryDuctNozzles">1</div>
-                        </div>
-                        
-                        <div class="summary-item">
-                            <div class="summary-label">Appliance Nozzles</div>
-                            <div class="summary-value" id="summaryApplianceNozzles">0</div>
-                        </div>
-                        
-                        <div class="summary-item">
-                            <div class="summary-label">Total Nozzles</div>
-                            <div class="summary-value highlight" id="summaryTotalNozzles">3</div>
-                        </div>
-                        
-                        <div class="summary-item">
-                            <div class="summary-label">Cylinders Required</div>
-                            <div class="summary-value" id="summaryCylinders">1</div>
-                        </div>
-                        
-                        <div class="summary-item">
-                            <div class="summary-label">Agent Weight</div>
-                            <div class="summary-value" id="summaryAgentWeight">5.7 kg</div>
-                        </div>
-                        
-                        <div class="summary-item">
-                            <div class="summary-label">Piping Length</div>
-                            <div class="summary-value" id="summaryPiping">11 m</div>
-                        </div>
-                    </div>
-                    
-                    <div class="total-cost">
-                        <div class="total-label">Estimated System Cost</div>
-                        <div class="total-value" id="summaryCost">$4,850.25</div>
-                        <div class="currency-note">in <span id="summaryCurrency">USD</span></div>
-                    </div>
-                    
-                    <div class="action-buttons">
-                        <button id="calculateBtn" class="btn btn-primary btn-lg">
-                            <i class="fas fa-calculator"></i> Calculate & View Details
-                        </button>
-                        <button id="resetBtn" class="btn btn-secondary">
-                            <i class="fas fa-redo"></i> Reset
-                        </button>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle">
-                                <i class="fas fa-download"></i> Export
-                            </button>
-                            <div class="dropdown-menu">
-                                <a href="#" id="exportJson" class="dropdown-item">
-                                    <i class="fas fa-file-code"></i> JSON
-                                </a>
-                                <a href="#" id="exportCsv" class="dropdown-item">
-                                    <i class="fas fa-file-csv"></i> CSV
-                                </a>
-                                <a href="#" id="shareLink" class="dropdown-item">
-                                    <i class="fas fa-share"></i> Share Link
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Safety Warnings Card -->
-                <div class="card">
-                    <h3 class="card-title"><i class="fas fa-shield-alt"></i> Safety Compliance Check</h3>
-                    <div id="safetyWarnings">
-                        <div class="safety-status loading">
-                            <div class="spinner small"></div>
-                            <div>
-                                <strong>Checking safety requirements...</strong>
-                                <small>Validating against NFPA standards</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Recent Calculations -->
-                <div class="card">
-                    <h3 class="card-title"><i class="fas fa-history"></i> Recent Calculations</h3>
-                    <div id="recentCalculations">
-                        <div class="empty-state">
-                            <i class="fas fa-clock"></i>
-                            <p>No recent calculations</p>
-                            <small>Your calculations will appear here</small>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Quick Help -->
-                <div class="card">
-                    <h3 class="card-title"><i class="fas fa-question-circle"></i> Quick Help</h3>
-                    <ul class="help-list">
-                        <li><i class="fas fa-check-circle"></i> One nozzle required per plenum section</li>
-                        <li><i class="fas fa-check-circle"></i> One nozzle required per duct opening</li>
-                        <li><i class="fas fa-check-circle"></i> Standard nozzle coverage: 600mm × 600mm area</li>
-                        <li><i class="fas fa-check-circle"></i> Cylinder selection based on max nozzles per cylinder</li>
-                        <li><i class="fas fa-check-circle"></i> Piping estimate: 2m per nozzle + 5m main run</li>
-                    </ul>
-                </div>
-            </div>
-        </main>
-        
-        <!-- Expert Panel -->
-        <div class="card expert-panel-card" id="expertPanel">
-            <h3 class="card-title"><i class="fas fa-cogs"></i> Expert Configuration</h3>
-            <div class="expert-panel-content">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="nozzleType">Nozzle Type</label>
-                        <select id="nozzleType">
-                            <option value="standard">Standard Appliance Nozzle</option>
-                            <option value="high-flow">High-Flow Plenum Nozzle</option>
-                            <option value="low-flow">Low-Flow Extended Coverage</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="pipeMaterial">Piping Material</label>
-                        <select id="pipeMaterial">
-                            <option value="galvanized">Galvanized Steel</option>
-                            <option value="stainless">Stainless Steel</option>
-                            <option value="copper">Copper</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="safetyFactor">Safety Factor (%)</label>
-                        <div class="input-with-unit">
-                            <input type="number" id="safetyFactor" min="0" max="50" step="5" value="10">
-                            <span class="unit">%</span>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="pressureRating">System Pressure (PSI)</label>
-                        <div class="input-with-unit">
-                            <input type="number" id="pressureRating" min="50" max="300" step="10" value="100">
-                            <span class="unit">PSI</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="additionalNotes">Additional Notes</label>
-                    <textarea id="additionalNotes" rows="3" placeholder="Add any special requirements or notes..."></textarea>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Emergency Procedures -->
-        <section class="emergency-guidance">
-            <div class="container">
-                <h2><i class="fas fa-exclamation-triangle"></i> Emergency Response Guidelines</h2>
-                <div class="guidance-grid">
-                    <div class="guidance-card">
-                        <div class="guidance-icon emergency">
-                            <i class="fas fa-fire"></i>
-                        </div>
-                        <h3>Kitchen Fire Emergency</h3>
-                        <ul>
-                            <li>Activate manual release station immediately</li>
-                            <li>Evacuate all personnel from the area</li>
-                            <li>Call emergency services (911/112)</li>
-                            <li>Do not re-enter until cleared by fire department</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="guidance-card">
-                        <div class="guidance-icon warning">
-                            <i class="fas fa-exclamation"></i>
-                        </div>
-                        <h3>System Maintenance</h3>
-                        <ul>
-                            <li>Monthly visual inspection of all components</li>
-                            <li>Annual professional inspection required</li>
-                            <li>Test manual release station quarterly</li>
-                            <li>Keep area around cylinders clear (1m radius)</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="guidance-card">
-                        <div class="guidance-icon info">
-                            <i class="fas fa-graduation-cap"></i>
-                        </div>
-                        <h3>Staff Training</h3>
-                        <ul>
-                            <li>Train all kitchen staff on system operation</li>
-                            <li>Conduct fire drills every 6 months</li>
-                            <li>Post emergency procedures in kitchen</li>
-                            <li>Maintain training records</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Explore Tools -->
-        <section class="explore-tools">
-            <h2><i class="fas fa-star"></i> Explore More Calculators & Tools</h2>
-            <p class="section-subtitle">We highly recommend these expert resources for specialized safety and utility tools:</p>
-            <div class="tools-grid">
-                <div class="tool-card">
-                    <div class="tool-icon">🔥</div>
-                    <h3>Fire Safety Tool</h3>
-                    <p>Comprehensive suite of NFPA & IBC compliant calculators for clean agent, CO₂, foam systems, and egress planning.</p>
-                    <a href="https://www.firesafetytool.com" target="_blank" class="tool-link">Visit Site <i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">🛡️</div>
-                    <h3>HSE Calculator</h3>
-                    <p>Health, Safety & Environment tools for risk assessment, noise exposure, incident rates, and compliance management.</p>
-                    <a href="https://www.hsecalculator.com" target="_blank" class="tool-link">Visit Site <i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">⚙️</div>
-                    <h3>Web Tools Daily</h3>
-                    <p>Collection of free, privacy-focused utilities like image converters and formatters that work directly in your browser.</p>
-                    <a href="https://www.webtoolsdaily.com" target="_blank" class="tool-link">Visit Site <i class="fas fa-external-link-alt"></i></a>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Amazon Associates Banner -->
-        <aside class="affiliate-banner">
-            <a href="https://amzn.to/4p8ceG6" target="_blank" class="amazon-button">
-                <span class="sale-badge">Clearance Sale! Up to 70% Off</span>
-                <span class="banner-text">🔥 Shop Fire Safety Equipment on Amazon</span>
-                <i class="fas fa-bolt"></i>
-            </a>
-        </aside>
-        
-        <!-- Buy Me a Coffee -->
-        <div class="coffee-container">
-            <p>If this tool helped you, consider supporting our work:</p>
-            <a href="https://buymeacoffee.com/s.amjathkhan" target="_blank" class="coffee-button">
-                <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee">
-            </a>
-        </div>
-        
-        <!-- Footer -->
-        <footer>
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <i class="fas fa-fire-extinguisher"></i>
-                    <span>KFSS Calculator</span>
-                </div>
-                <div class="footer-links">
-                    <a href="index.html">Calculator</a>
-                    <a href="results.html">Results</a>
-                    <a href="quotation.html">Quotation</a>
-                    <a href="#" onclick="window.print()">Print</a>
-                </div>
-                <div class="footer-disclaimer">
-                    <p>© 2023 Fire Safety Solutions. This tool is for estimation purposes only. Final design must be verified by a licensed professional.</p>
-                    <p>Compliant with NFPA 96 & NFPA 17A standards for wet chemical kitchen fire suppression systems.</p>
-                </div>
-            </div>
-        </footer>
-    </div>
 </body>
 </html>
